@@ -315,7 +315,7 @@ export default function Home() {
           transition: "all 0.5s ease",
         }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/Mandala%20Network%20Logo2.svg" alt="Mandala Network" style={{ height: 32, mixBlendMode: "multiply" }}
+        <img src="/Mandala%20Network%20Logo2.svg" alt="Mandala Network" style={{ height: 56, mixBlendMode: "multiply" }}
           onError={e => { e.currentTarget.style.display = "none"; (e.currentTarget.nextElementSibling as HTMLElement)!.style.display = "block"; }} />
         <span style={{ display: "none", fontWeight: 700, color: "#1c1008" }}>Mandala Network</span>
         <div className="flex items-center gap-8">
