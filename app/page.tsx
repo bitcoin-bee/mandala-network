@@ -315,7 +315,7 @@ export default function Home() {
           transition: "all 0.5s ease",
         }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/logo.png" alt="Mandala Network" style={{ height: 32, mixBlendMode: "multiply" }}
+        <img src="/Mandala%20Network%20Logo2.svg" alt="Mandala Network" style={{ height: 32, mixBlendMode: "multiply" }}
           onError={e => { e.currentTarget.style.display = "none"; (e.currentTarget.nextElementSibling as HTMLElement)!.style.display = "block"; }} />
         <span style={{ display: "none", fontWeight: 700, color: "#1c1008" }}>Mandala Network</span>
         <div className="flex items-center gap-8">
@@ -440,7 +440,7 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
             <Reveal className="relative rounded-2xl overflow-hidden" style={{ minHeight: 500 }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/mumbai.jpg" alt="Mumbai" style={{ width: "100%", minHeight: 500, objectFit: "cover", display: "block", transition: "transform 0.6s ease" }}
+              <img src="/Mumbai.jpg" alt="Mumbai" style={{ width: "100%", minHeight: 500, objectFit: "cover", display: "block", transition: "transform 0.6s ease" }}
                 onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.03)")}
                 onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")}
                 onError={e => { e.currentTarget.style.display = "none"; const p = e.currentTarget.parentElement; if (p) { p.style.background = "#ede8df"; p.style.display = "flex"; p.style.alignItems = "center"; p.style.justifyContent = "center"; } }} />
@@ -479,7 +479,7 @@ export default function Home() {
                 onMouseEnter={e => { e.currentTarget.style.borderColor = "#8b7355"; e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(0,0,0,0.3)"; }}
                 onMouseLeave={e => { e.currentTarget.style.borderColor = "#3a2518"; e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/pfp.jpg" alt="" style={{ width: 44, height: 44, borderRadius: "50%", objectFit: "cover" }}
+                <img src="/PFP.JPG" alt="" style={{ width: 44, height: 44, borderRadius: "50%", objectFit: "cover" }}
                   onError={e => (e.currentTarget.style.display = "none")} />
                 <div>
                   <div style={{ fontSize: "0.9rem", fontWeight: 600, color: "#f5f0e8" }}>Message us on Telegram</div>
