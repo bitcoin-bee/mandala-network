@@ -2,116 +2,145 @@
 
 import { useState } from "react";
 
+function MandalaDecoration() {
+  return (
+    <svg
+      viewBox="0 0 600 600"
+      xmlns="http://www.w3.org/2000/svg"
+      className="absolute inset-0 w-full h-full"
+      aria-hidden="true"
+    >
+      <g transform="translate(300,300)" stroke="#8b7355" fill="none" opacity="0.08" strokeWidth="0.8">
+        <circle r="280" /><circle r="240" /><circle r="200" /><circle r="160" />
+        <circle r="120" /><circle r="80" /><circle r="40" />
+        {[0,30,60,90,120,150,180,210,240,270,300,330].map((a) => (
+          <line key={a} x1="0" y1="0" x2={280*Math.cos((a*Math.PI)/180)} y2={280*Math.sin((a*Math.PI)/180)} />
+        ))}
+        {[0,45,90,135,180,225,270,315].map((a) => (
+          <polygon key={a} points="0,-20 17,10 -17,10"
+            transform={`rotate(${a}) translate(0,-160)`} />
+        ))}
+        {[0,60,120,180,240,300].map((a) => (
+          <circle key={a} r="6" cx={120*Math.cos((a*Math.PI)/180)} cy={120*Math.sin((a*Math.PI)/180)} />
+        ))}
+      </g>
+    </svg>
+  );
+}
+
 export default function Home() {
-  const [formData, setFormData] = useState({
-    name: "",
-    company: "",
-    email: "",
-    message: "",
-  });
+  const [formData, setFormData] = useState({ name: "", company: "", email: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setSubmitted(true);
-  };
+  }
 
   return (
-    <div className="bg-[#0a0a0a] text-[#f0ece4] min-h-screen font-sans">
+    <div style={{ fontFamily: "var(--font-body, sans-serif)" }}>
+
       {/* NAV */}
-      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-5 md:px-12 bg-[#0a0a0a]/90 backdrop-blur-sm border-b border-[#1e1e1e]">
-        <span className="text-lg font-semibold tracking-wide text-[#f0ece4]">
-          Mandala Network
-        </span>
-        <div className="flex items-center gap-6">
-          <a
-            href="#devcon"
-            className="text-sm text-[#6b6b6b] hover:text-[#f0ece4] transition-colors duration-200 hidden sm:block"
-          >
-            Devcon Mumbai
-          </a>
-          <a
-            href="#contact"
-            className="text-sm font-medium px-5 py-2.5 rounded border border-[#c9a84c] text-[#c9a84c] hover:bg-[#c9a84c] hover:text-[#0a0a0a] transition-colors duration-200"
-          >
+      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-12 py-4"
+        style={{ background: "rgba(245,240,232,0.92)", backdropFilter: "blur(12px)", borderBottom: "1px solid #c4b99a" }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/logo.png" alt="Mandala Network" className="h-8 w-auto" />
+        <div className="flex items-center gap-6 md:gap-8">
+          <a href="#about" className="hidden md:block text-sm" style={{ color: "#5c4a32" }}>About</a>
+          <a href="#services" className="hidden md:block text-sm" style={{ color: "#5c4a32" }}>Services</a>
+          <a href="#devcon" className="hidden md:block text-sm" style={{ color: "#5c4a32" }}>Devcon Mumbai</a>
+          <a href="#contact" className="text-sm px-5 py-2.5 rounded"
+            style={{ background: "#1c1008", color: "#f5f0e8" }}>
             Get in Touch
           </a>
         </div>
       </nav>
 
       {/* HERO */}
-      <section
-        id="hero"
-        className="min-h-screen flex flex-col items-center justify-center relative px-6 pt-20 pb-16 text-center overflow-hidden"
-      >
-        {/* Background decoration */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          aria-hidden="true"
-        >
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full border border-[#c9a84c]/10" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full border border-[#c9a84c]/10" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] h-[200px] rounded-full border border-[#c9a84c]/15" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80px] h-[80px] rounded-full bg-[#c9a84c]/5" />
+      <section className="relative min-h-screen flex flex-col items-center justify-center text-center px-6 pt-24 pb-16 overflow-hidden">
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div className="w-[600px] h-[600px] relative">
+            <MandalaDecoration />
+          </div>
         </div>
-
         <div className="relative z-10 max-w-4xl mx-auto">
-          <p className="text-[#c9a84c] text-sm font-medium tracking-widest uppercase mb-6">
-            Real Market Access
+          <p className="animate-fade-up delay-1 text-xs font-medium tracking-[0.25em] uppercase mb-8"
+            style={{ color: "#8b7355" }}>
+            Market Access · Events · Web3 &amp; AI
           </p>
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight mb-8">
-            Real Market Access for{" "}
-            <span className="text-[#c9a84c]">Web3 &amp; AI</span> Companies
+          <h1 className="animate-fade-up delay-2 text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold leading-[1.05] mb-8"
+            style={{ fontFamily: "var(--font-display, Georgia, serif)", color: "#1c1008" }}>
+            From Relationships<br />to Real Outcomes.
           </h1>
-          <p className="text-[#6b6b6b] text-lg md:text-xl max-w-2xl mx-auto mb-12 leading-relaxed">
-            Mandala Network helps Web3 and AI companies get real market access
-            across Europe, the Middle East, and South Asia — and builds event
-            experiences that put them in front of the right people.
+          <p className="animate-fade-up delay-3 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto mb-12"
+            style={{ color: "#5c4a32" }}>
+            Mandala Network opens markets and builds event experiences for Web3 and AI companies
+            across Europe, the Middle East, and South Asia.
           </p>
-          <a
-            href="#contact"
-            className="inline-block px-8 py-4 bg-[#c9a84c] text-[#0a0a0a] font-semibold rounded hover:bg-[#b8963e] transition-colors duration-200 text-sm tracking-wide"
-          >
-            Work With Us
-          </a>
+          <div className="animate-fade-up delay-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a href="#contact" className="px-8 py-4 rounded text-sm font-medium"
+              style={{ background: "#1c1008", color: "#f5f0e8" }}>
+              Work With Us
+            </a>
+            <a href="#services" className="px-8 py-4 rounded text-sm font-medium border"
+              style={{ borderColor: "#c4b99a", color: "#1c1008" }}>
+              Our Services
+            </a>
+          </div>
         </div>
       </section>
 
+      {/* STATS STRIP */}
+      <div style={{ background: "#1c1008", color: "#f5f0e8" }}>
+        <div className="max-w-6xl mx-auto px-6 md:px-12 py-10 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-0">
+          {[
+            { value: "3", label: "Regions" },
+            { value: "Europe · MENA · South Asia", label: "Markets" },
+            { value: "Intentional", label: "Client Roster" },
+            { value: "End-to-End", label: "Event Production" },
+          ].map((s, i) => (
+            <div key={i} className="text-center md:border-r last:border-r-0" style={{ borderColor: "#3a2518" }}>
+              <div className="text-2xl md:text-3xl font-bold mb-1" style={{ fontFamily: "var(--font-display, serif)" }}>
+                {s.value}
+              </div>
+              <div className="text-xs tracking-widest uppercase" style={{ color: "#8b7355" }}>{s.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* ABOUT */}
-      <section id="about" className="py-24 md:py-32 px-6 md:px-12 border-t border-[#1e1e1e]">
+      <section id="about" className="py-28 md:py-36 px-6 md:px-12" style={{ borderTop: "1px solid #c4b99a" }}>
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-start">
           <div>
-            <p className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#c9a84c] leading-tight">
-              &ldquo;Intentional
-              <br />
-              by design.&rdquo;
-            </p>
+            <p className="text-xs tracking-[0.2em] uppercase mb-8" style={{ color: "#8b7355" }}>About</p>
+            <blockquote className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight"
+              style={{ fontFamily: "var(--font-display, serif)", color: "#1c1008" }}>
+              &ldquo;We go deep,<br />not wide.&rdquo;
+            </blockquote>
           </div>
-          <div className="flex flex-col gap-6">
-            <h2 className="text-2xl font-semibold text-[#f0ece4]">
-              We are Mandala Network
-            </h2>
-            <p className="text-[#6b6b6b] leading-relaxed text-base md:text-lg">
-              We are a boutique market access and events firm working
-              exclusively with Web3 and AI companies. Our focus is on three
-              regions that are shaping the next decade of digital adoption:
-              Europe, the Middle East &amp; North Africa, and South Asia.
+          <div className="space-y-6 text-base md:text-lg leading-relaxed" style={{ color: "#5c4a32" }}>
+            <p>
+              We are Mandala Network — a boutique market access and events firm working exclusively
+              with Web3 and AI companies. Our focus is on three regions shaping the next decade of
+              digital adoption: Europe, the Middle East &amp; North Africa, and South Asia.
             </p>
-            <p className="text-[#6b6b6b] leading-relaxed text-base md:text-lg">
-              We don&apos;t take on many clients. We go deep, not wide — building
-              genuine relationships and opening doors that matter. When you work
-              with Mandala Network, you work with a team that is as invested in
-              your success as you are.
+            <p>
+              We don&apos;t take on many clients. That&apos;s deliberate. Every engagement gets our full
+              attention, our deepest relationships, and our best work. When you work with Mandala
+              Network, you work with a team as invested in your success as you are.
             </p>
-            <div className="pt-4 border-t border-[#1e1e1e]">
-              <p className="text-[#f0ece4] text-sm font-medium tracking-widest uppercase">
-                Europe &bull; MENA &bull; South Asia
+            <p>
+              The result: faster market entry, stronger partnerships, and event experiences
+              designed to actually move deals — not just fill rooms.
+            </p>
+            <div className="pt-6" style={{ borderTop: "1px solid #c4b99a" }}>
+              <p className="text-xs tracking-[0.25em] uppercase font-medium" style={{ color: "#8b7355" }}>
+                Europe &nbsp;&bull;&nbsp; MENA &nbsp;&bull;&nbsp; South Asia
               </p>
             </div>
           </div>
@@ -119,274 +148,73 @@ export default function Home() {
       </section>
 
       {/* SERVICES */}
-      <section id="services" className="py-24 md:py-32 px-6 md:px-12 border-t border-[#1e1e1e]">
+      <section id="services" className="py-28 md:py-36 px-6 md:px-12"
+        style={{ background: "#ede8df", borderTop: "1px solid #c4b99a" }}>
         <div className="max-w-6xl mx-auto">
-          <div className="mb-16 text-center">
-            <p className="text-[#c9a84c] text-sm font-medium tracking-widest uppercase mb-4">
-              What We Do
-            </p>
-            <h2 className="text-3xl md:text-4xl font-bold text-[#f0ece4]">
-              Our Services
-            </h2>
-          </div>
+          <p className="text-xs tracking-[0.2em] uppercase mb-4" style={{ color: "#8b7355" }}>What We Do</p>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-16"
+            style={{ fontFamily: "var(--font-display, serif)", color: "#1c1008" }}>
+            Three things.<br />Done exceptionally well.
+          </h2>
           <div className="grid md:grid-cols-3 gap-8">
-            {/* Market Access */}
-            <div className="bg-[#111111] border border-[#1e1e1e] rounded-lg p-8 flex flex-col gap-6 hover:border-[#c9a84c]/30 transition-colors duration-300">
-              <div className="w-12 h-12 flex items-center justify-center rounded bg-[#c9a84c]/10">
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#c9a84c"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
-                >
-                  <circle cx="12" cy="12" r="10" />
-                  <line x1="2" y1="12" x2="22" y2="12" />
-                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-                </svg>
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold text-[#f0ece4] mb-3">
-                  Market Access
-                </h3>
-                <p className="text-[#6b6b6b] leading-relaxed text-sm">
-                  Europe, MENA, and South Asia. Strategic entry, partnerships,
-                  and introductions in the markets that matter. We connect you
-                  with the people and institutions that accelerate real growth.
-                </p>
-              </div>
-            </div>
-
-            {/* Event Production */}
-            <div className="bg-[#111111] border border-[#1e1e1e] rounded-lg p-8 flex flex-col gap-6 hover:border-[#c9a84c]/30 transition-colors duration-300">
-              <div className="w-12 h-12 flex items-center justify-center rounded bg-[#c9a84c]/10">
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#c9a84c"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
-                >
-                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                  <circle cx="9" cy="7" r="4" />
-                  <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                  <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                </svg>
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold text-[#f0ece4] mb-3">
-                  Event Production
-                </h3>
-                <p className="text-[#6b6b6b] leading-relaxed text-sm">
-                  From private dinners to large-scale B2B activations, designed
-                  to move deals. We create the conditions for meaningful
-                  conversations and lasting business relationships.
-                </p>
-              </div>
-            </div>
-
-            {/* Intentional by Design */}
-            <div className="bg-[#111111] border border-[#1e1e1e] rounded-lg p-8 flex flex-col gap-6 hover:border-[#c9a84c]/30 transition-colors duration-300">
-              <div className="w-12 h-12 flex items-center justify-center rounded bg-[#c9a84c]/10">
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#c9a84c"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
-                >
-                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                </svg>
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold text-[#f0ece4] mb-3">
-                  Intentional by Design
-                </h3>
-                <p className="text-[#6b6b6b] leading-relaxed text-sm">
-                  We work with a small number of clients at a time. This is a
-                  deliberate choice — it means every engagement gets our full
-                  attention, and quality is never sacrificed for volume.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CONTACT */}
-      <section id="contact" className="py-24 md:py-32 px-6 md:px-12 border-t border-[#1e1e1e]">
-        <div className="max-w-2xl mx-auto">
-          <div className="mb-12 text-center">
-            <p className="text-[#c9a84c] text-sm font-medium tracking-widest uppercase mb-4">
-              Get in Touch
-            </p>
-            <h2 className="text-3xl md:text-4xl font-bold text-[#f0ece4]">
-              Let&apos;s Talk
-            </h2>
-          </div>
-
-          {submitted ? (
-            <div className="text-center py-16">
-              <div className="w-16 h-16 rounded-full bg-[#c9a84c]/10 flex items-center justify-center mx-auto mb-6">
-                <svg
-                  width="28"
-                  height="28"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#c9a84c"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
-                >
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold text-[#f0ece4] mb-3">
-                Message received.
-              </h3>
-              <p className="text-[#6b6b6b]">
-                We&apos;ll be in touch shortly.
-              </p>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-              <div className="grid sm:grid-cols-2 gap-5">
-                <div className="flex flex-col gap-2">
-                  <label
-                    htmlFor="name"
-                    className="text-xs font-medium tracking-widest uppercase text-[#6b6b6b]"
-                  >
-                    Name
-                  </label>
-                  <input
-                    id="name"
-                    name="name"
-                    type="text"
-                    required
-                    value={formData.name}
-                    onChange={handleChange}
-                    placeholder="Your name"
-                    className="bg-[#111111] border border-[#1e1e1e] rounded px-4 py-3 text-[#f0ece4] text-sm placeholder-[#3a3a3a] focus:outline-none focus:border-[#c9a84c]/50 transition-colors"
-                  />
+            {[
+              {
+                n: "01", title: "Market Access",
+                body: "Strategic entry, partnerships, and introductions across Europe, MENA, and South Asia. We connect you with the people and institutions that accelerate real growth."
+              },
+              {
+                n: "02", title: "Event Production",
+                body: "From private dinners to large-scale B2B activations — every experience is designed with one goal: to move deals and build lasting relationships."
+              },
+              {
+                n: "03", title: "Intentional Roster",
+                body: "We work with a small number of clients at a time. This is a deliberate choice — it means every engagement gets our full attention, never sacrificed for volume."
+              },
+            ].map((s) => (
+              <div key={s.n} className="p-8 rounded-lg relative overflow-hidden"
+                style={{ background: "#f5f0e8", border: "1px solid #c4b99a" }}>
+                <div className="text-7xl font-bold absolute top-4 right-6 leading-none select-none"
+                  style={{ color: "#c4b99a", fontFamily: "var(--font-display, serif)" }}>
+                  {s.n}
                 </div>
-                <div className="flex flex-col gap-2">
-                  <label
-                    htmlFor="company"
-                    className="text-xs font-medium tracking-widest uppercase text-[#6b6b6b]"
-                  >
-                    Company
-                  </label>
-                  <input
-                    id="company"
-                    name="company"
-                    type="text"
-                    value={formData.company}
-                    onChange={handleChange}
-                    placeholder="Your company"
-                    className="bg-[#111111] border border-[#1e1e1e] rounded px-4 py-3 text-[#f0ece4] text-sm placeholder-[#3a3a3a] focus:outline-none focus:border-[#c9a84c]/50 transition-colors"
-                  />
-                </div>
+                <h3 className="text-xl font-semibold mb-4 relative z-10"
+                  style={{ color: "#1c1008" }}>{s.title}</h3>
+                <p className="text-sm leading-relaxed relative z-10" style={{ color: "#5c4a32" }}>{s.body}</p>
               </div>
-              <div className="flex flex-col gap-2">
-                <label
-                  htmlFor="email"
-                  className="text-xs font-medium tracking-widest uppercase text-[#6b6b6b]"
-                >
-                  Email
-                </label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="your@email.com"
-                  className="bg-[#111111] border border-[#1e1e1e] rounded px-4 py-3 text-[#f0ece4] text-sm placeholder-[#3a3a3a] focus:outline-none focus:border-[#c9a84c]/50 transition-colors"
-                />
-              </div>
-              <div className="flex flex-col gap-2">
-                <label
-                  htmlFor="message"
-                  className="text-xs font-medium tracking-widest uppercase text-[#6b6b6b]"
-                >
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  required
-                  rows={5}
-                  value={formData.message}
-                  onChange={handleChange}
-                  placeholder="Tell us about your company and what you're looking to achieve..."
-                  className="bg-[#111111] border border-[#1e1e1e] rounded px-4 py-3 text-[#f0ece4] text-sm placeholder-[#3a3a3a] focus:outline-none focus:border-[#c9a84c]/50 transition-colors resize-none"
-                />
-              </div>
-              <button
-                type="submit"
-                className="mt-2 px-8 py-4 bg-[#c9a84c] text-[#0a0a0a] font-semibold rounded hover:bg-[#b8963e] transition-colors duration-200 text-sm tracking-wide"
-              >
-                Send Message
-              </button>
-              <p className="text-center text-xs text-[#6b6b6b] mt-2">
-                We work with a small number of clients at a time.
-              </p>
-            </form>
-          )}
+            ))}
+          </div>
         </div>
       </section>
 
       {/* DEVCON MUMBAI */}
-      <section id="devcon" className="py-24 md:py-32 px-6 md:px-12 border-t border-[#1e1e1e]">
+      <section id="devcon" className="py-28 md:py-36 px-6 md:px-12"
+        style={{ borderTop: "1px solid #c4b99a" }}>
         <div className="max-w-6xl mx-auto">
-          <p className="text-[#c9a84c] text-sm font-medium tracking-widest uppercase mb-4">
-            Upcoming Event
-          </p>
-          <h2 className="text-3xl md:text-4xl font-bold text-[#f0ece4] mb-4">
+          <p className="text-xs tracking-[0.2em] uppercase mb-4" style={{ color: "#8b7355" }}>Upcoming Event</p>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4"
+            style={{ fontFamily: "var(--font-display, serif)", color: "#1c1008" }}>
             Devcon Mumbai
           </h2>
-          <p className="text-[#6b6b6b] text-lg leading-relaxed max-w-2xl mb-12">
-            We&apos;re on the ground in Mumbai — connecting the right people, curating the right rooms, and making sure your presence counts.
+          <p className="text-lg mb-14 max-w-xl" style={{ color: "#5c4a32" }}>
+            We&apos;re on the ground in Mumbai — curating the right rooms and making sure your presence counts.
           </p>
-
-          {/* Image + Form grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
-            {/* Photo */}
-            <div className="relative overflow-hidden rounded-lg">
+            <div className="relative rounded-lg overflow-hidden" style={{ minHeight: 480 }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/mumbai.jpg"
-                alt="Mumbai street scene"
-                className="w-full h-full object-cover object-center max-h-[520px] rounded-lg"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/60 to-transparent rounded-lg" />
+              <img src="/mumbai.jpg" alt="Mumbai" className="w-full h-full object-cover"
+                style={{ minHeight: 480 }} />
+              <div className="absolute inset-0"
+                style={{ background: "linear-gradient(to top, rgba(28,16,8,0.5) 0%, transparent 60%)" }} />
               <div className="absolute bottom-6 left-6">
-                <span className="text-xs tracking-widest uppercase text-[#c9a84c] font-medium">
+                <span className="text-xs tracking-widest uppercase font-medium" style={{ color: "#c4b99a" }}>
                   Mumbai, India
                 </span>
               </div>
             </div>
-
-            {/* Typeform embed */}
-            <div className="bg-[#111111] border border-[#1e1e1e] rounded-lg overflow-hidden" style={{ minHeight: 520 }}>
+            <div className="rounded-lg overflow-hidden" style={{ border: "1px solid #c4b99a", minHeight: 520 }}>
               <iframe
                 src="https://form.typeform.com/to/qvrQfqQo"
-                width="100%"
-                height="520"
+                width="100%" height="520"
                 frameBorder="0"
                 allow="camera; microphone; autoplay; encrypted-media;"
                 title="Devcon Mumbai Registration"
@@ -397,13 +225,95 @@ export default function Home() {
         </div>
       </section>
 
+      {/* CONTACT */}
+      <section id="contact" className="py-28 md:py-36 px-6 md:px-12"
+        style={{ background: "#1c1008", borderTop: "1px solid #2d1f14" }}>
+        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16">
+          <div>
+            <p className="text-xs tracking-[0.2em] uppercase mb-6" style={{ color: "#8b7355" }}>Contact</p>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6"
+              style={{ fontFamily: "var(--font-display, serif)", color: "#f5f0e8" }}>
+              Let&apos;s Talk.
+            </h2>
+            <p className="text-lg leading-relaxed mb-4" style={{ color: "#c4b99a" }}>
+              If you&apos;re a Web3 or AI company looking to expand into new markets — or you want an
+              event that actually delivers — we&apos;d like to hear from you.
+            </p>
+            <p className="text-sm italic" style={{ color: "#8b7355" }}>
+              We work with a small number of clients at a time.
+            </p>
+          </div>
+          <div>
+            {submitted ? (
+              <div className="flex flex-col items-center justify-center h-full text-center py-20">
+                <div className="w-16 h-16 rounded-full flex items-center justify-center mb-6"
+                  style={{ background: "rgba(139,115,85,0.15)" }}>
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
+                    stroke="#8b7355" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-semibold mb-2" style={{ color: "#f5f0e8" }}>Message received.</h3>
+                <p style={{ color: "#8b7355" }}>We&apos;ll be in touch shortly.</p>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+                <div className="grid sm:grid-cols-2 gap-5">
+                  {[
+                    { id: "name", label: "Name", type: "text", placeholder: "Your name" },
+                    { id: "company", label: "Company", type: "text", placeholder: "Your company" },
+                  ].map((f) => (
+                    <div key={f.id}>
+                      <label htmlFor={f.id} className="block text-xs tracking-widest uppercase mb-2"
+                        style={{ color: "#8b7355" }}>{f.label}</label>
+                      <input id={f.id} name={f.id} type={f.type} required={f.id === "name"}
+                        value={formData[f.id as keyof typeof formData]}
+                        onChange={handleChange} placeholder={f.placeholder}
+                        className="w-full px-4 py-3 rounded text-sm"
+                        style={{ background: "#2d1f14", border: "1px solid #3a2518", color: "#f5f0e8" }} />
+                    </div>
+                  ))}
+                </div>
+                <div>
+                  <label htmlFor="email" className="block text-xs tracking-widest uppercase mb-2"
+                    style={{ color: "#8b7355" }}>Email</label>
+                  <input id="email" name="email" type="email" required
+                    value={formData.email} onChange={handleChange} placeholder="you@company.com"
+                    className="w-full px-4 py-3 rounded text-sm"
+                    style={{ background: "#2d1f14", border: "1px solid #3a2518", color: "#f5f0e8" }} />
+                </div>
+                <div>
+                  <label htmlFor="message" className="block text-xs tracking-widest uppercase mb-2"
+                    style={{ color: "#8b7355" }}>Message</label>
+                  <textarea id="message" name="message" required rows={5}
+                    value={formData.message} onChange={handleChange}
+                    placeholder="Tell us about your goals..."
+                    className="w-full px-4 py-3 rounded text-sm resize-none"
+                    style={{ background: "#2d1f14", border: "1px solid #3a2518", color: "#f5f0e8" }} />
+                </div>
+                <button type="submit" className="w-full py-4 rounded text-sm font-medium"
+                  style={{ background: "#f5f0e8", color: "#1c1008" }}>
+                  Send Message
+                </button>
+                <p className="text-center text-xs" style={{ color: "#5c4a32" }}>
+                  We work with a small number of clients at a time.
+                </p>
+              </form>
+            )}
+          </div>
+        </div>
+      </section>
+
       {/* FOOTER */}
-      <footer className="border-t border-[#1e1e1e] py-8 px-6 md:px-12">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <span className="text-sm font-semibold text-[#f0ece4]">
-            Mandala Network
-          </span>
-          <p className="text-xs text-[#6b6b6b]">
+      <footer className="px-6 md:px-12 py-10" style={{ background: "#f5f0e8", borderTop: "1px solid #c4b99a" }}>
+        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div>
+            <div className="font-semibold text-sm mb-1" style={{ color: "#1c1008" }}>Mandala Network</div>
+            <div className="text-xs tracking-widest uppercase" style={{ color: "#8b7355" }}>
+              From Relationships to Real Outcomes
+            </div>
+          </div>
+          <p className="text-xs" style={{ color: "#8b7355" }}>
             &copy; {new Date().getFullYear()} Mandala Network. All rights reserved.
           </p>
         </div>
