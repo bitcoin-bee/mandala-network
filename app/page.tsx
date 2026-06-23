@@ -239,9 +239,23 @@ export default function Home() {
               If you&apos;re a Web3 or AI company looking to expand into new markets — or you want an
               event that actually delivers — we&apos;d like to hear from you.
             </p>
-            <p className="text-sm italic" style={{ color: "#8b7355" }}>
+            <p className="text-sm italic mb-10" style={{ color: "#8b7355" }}>
               We work with a small number of clients at a time.
             </p>
+            <a href="https://t.me/MandalaNetwork" target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 px-6 py-4 rounded-lg"
+              style={{ background: "#2d1f14", border: "1px solid #3a2518" }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/pfp.jpg" alt="Mandala Network" className="w-10 h-10 rounded-full object-cover" />
+              <div>
+                <div className="text-sm font-medium" style={{ color: "#f5f0e8" }}>Get in Touch on Telegram</div>
+                <div className="text-xs" style={{ color: "#8b7355" }}>@MandalaNetwork</div>
+              </div>
+              <svg className="ml-2" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="#8b7355" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+              </svg>
+            </a>
           </div>
           <div>
             {submitted ? (
