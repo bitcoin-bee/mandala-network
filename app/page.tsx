@@ -393,8 +393,11 @@ export default function Home() {
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-20 items-center">
           <div>
             <Reveal><p style={{ fontSize: "0.7rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "#8b7355", marginBottom: "2rem" }}>About</p></Reveal>
-            <SplitReveal text="We go deep, not wide." tag="h2" delay={100}
-              style={{ fontFamily: "var(--font-display,serif)", fontSize: "clamp(2.2rem,4.5vw,4rem)", fontWeight: 700, color: "#1c1008", lineHeight: 1.1 }} />
+            <Reveal delay={100}>
+              <h2 style={{ fontFamily: "var(--font-display,serif)", fontSize: "clamp(2.2rem,4.5vw,4rem)", fontWeight: 700, color: "#1c1008", lineHeight: 1.15 }}>
+                &ldquo;We go deep, not wide.&rdquo;
+              </h2>
+            </Reveal>
           </div>
           <div>
             <Reveal delay={200} className="space-y-6" style={{ color: "#5c4a32", fontSize: "1.05rem", lineHeight: 1.8 }}>
