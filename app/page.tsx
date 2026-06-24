@@ -340,7 +340,7 @@ export default function Home() {
         <div className="relative z-10 max-w-5xl mx-auto pt-20">
           <Reveal delay={0}>
             <p style={{ fontSize: "0.7rem", letterSpacing: "0.3em", textTransform: "uppercase", color: "#8b7355", marginBottom: "2rem" }}>
-              Market Access · Events · Web3 &amp; AI
+              Market Access · Experiential Experiences · Emerging Technologies
             </p>
           </Reveal>
           <SplitReveal text="From Relationships to Real Outcomes."
