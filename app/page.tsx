@@ -395,7 +395,7 @@ export default function Home() {
             <Reveal><p style={{ fontSize: "0.7rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "#8b7355", marginBottom: "2rem" }}>About</p></Reveal>
             <Reveal delay={100}>
               <h2 style={{ fontFamily: "var(--font-display,serif)", fontSize: "clamp(2.2rem,4.5vw,4rem)", fontWeight: 700, color: "#1c1008", lineHeight: 1.15 }}>
-                &ldquo;We go deep, not wide.&rdquo;ldquo;The right rooms. The right people.&ldquo;We go deep, not wide.&rdquo;rdquo;
+                "The right rooms. The right people."
               </h2>
             </Reveal>
           </div>
