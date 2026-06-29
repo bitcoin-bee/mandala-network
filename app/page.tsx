@@ -634,9 +634,9 @@ export default function Home() {
           </div>
           <div>
             <Reveal delay={200} className="space-y-6" style={{ color: "#5c4a32", fontSize: "1.05rem", lineHeight: 1.8 }}>
-              <p>We are Mandala Network — a boutique market access and events firm working exclusively with Web3 and AI companies across Europe, the Middle East &amp; North Africa, and South Asia.</p>
+              <p>We are Mandala Network, a boutique market access and events firm working exclusively with Web3 and AI companies across Europe, the Middle East &amp; North Africa, and South Asia.</p>
               <p>Every engagement gets our full attention, our deepest relationships, and our best work. When you work with Mandala Network, you work with a team as invested in your success as you are.</p>
-              <p>The result: faster market entry, stronger partnerships, and event experiences designed to actually move deals — not just fill rooms.</p>
+              <p>The result: faster market entry, stronger partnerships, and event experiences designed to actually move deals. Not just fill rooms.</p>
               <div style={{ paddingTop: "1.5rem", borderTop: "1px solid #c4b99a", display: "flex", alignItems: "center", gap: "0.75rem" }}>
                 <MandalaOrn size={24} color="#8b7355" opacity={0.6} />
                 <p style={{ fontSize: "0.7rem", letterSpacing: "0.25em", textTransform: "uppercase", color: "#8b7355", margin: 0 }}>Europe · MENA · South Asia</p>
@@ -664,7 +664,7 @@ export default function Home() {
             <ServiceCard n="01" title="Market Access" delay={0}
               body="Strategic entry, partnerships, and introductions across Europe, MENA, and South Asia. We connect you with the people and institutions that accelerate real growth." />
             <ServiceCard n="02" title="Event Production" delay={120}
-              body="From private dinners to large-scale B2B activations — every experience is engineered to move deals and forge the relationships that last." />
+              body="From private dinners to large-scale B2B activations, every experience is engineered to move deals and forge the relationships that last." />
             <ServiceCard n="03" title="Intentional Roster" delay={240}
               body="A small number of clients. Full attention. No dilution. Quality is the only metric that matters." />
           </div>
@@ -687,27 +687,14 @@ export default function Home() {
             style={{ fontFamily: "var(--font-display,serif)", fontSize: "clamp(2.2rem,5vw,4rem)", fontWeight: 700, color: "#1c1008", marginBottom: "1rem" }} />
           <Reveal delay={200}>
             <p style={{ fontSize: "1.1rem", color: "#5c4a32", maxWidth: "520px", marginBottom: "4rem" }}>
-              On the ground in Mumbai — curating the right rooms, making your presence count.
+              On the ground in Mumbai, curating the right rooms and making your presence count.
             </p>
           </Reveal>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
-            <Reveal className="relative rounded-2xl overflow-hidden" style={{ minHeight: 500 }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/Mumbai.jpg" alt="Mumbai" style={{ width: "100%", minHeight: 500, objectFit: "cover", display: "block", transition: "transform 0.6s ease" }}
-                onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.03)")}
-                onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")}
-                onError={e => { e.currentTarget.style.display = "none"; const p = e.currentTarget.parentElement; if (p) { p.style.background = "#ede8df"; p.style.display = "flex"; p.style.alignItems = "center"; p.style.justifyContent = "center"; } }} />
-              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top,rgba(28,16,8,0.6) 0%,transparent 50%)" }} />
-              <div style={{ position: "absolute", bottom: "1.5rem", left: "1.5rem" }}>
-                <span style={{ fontSize: "0.65rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "#c4b99a" }}>Mumbai, India</span>
-              </div>
-            </Reveal>
-            <Reveal delay={150} className="rounded-2xl overflow-hidden" style={{ border: "1px solid #c4b99a", minHeight: 520 }}>
-              <iframe src="https://form.typeform.com/to/qvrQfqQo" width="100%" height="520"
-                frameBorder="0" allow="camera; microphone; autoplay; encrypted-media;"
-                title="Devcon Mumbai Registration" className="block" />
-            </Reveal>
-          </div>
+          <Reveal className="rounded-2xl overflow-hidden" style={{ border: "1px solid #c4b99a", maxWidth: 760 }}>
+            <iframe src="https://form.typeform.com/to/qvrQfqQo" width="100%" height="560"
+              frameBorder="0" allow="camera; microphone; autoplay; encrypted-media;"
+              title="Devcon Mumbai Registration" className="block" />
+          </Reveal>
         </div>
       </section>
 
