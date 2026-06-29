@@ -2,8 +2,10 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 
-/* ── Animated Canvas Mandala ───────────────────────────────────── */
-function CanvasMandala() {
+/* ── Sacred Geometry Mandala Canvas ───────────────────────────────── */
+function CanvasMandala({ className = "", interactive = true, speed = 1 }: {
+  className?: string; interactive?: boolean; speed?: number;
+}) {
   const ref = useRef<HTMLCanvasElement>(null);
   const mouse = useRef({ x: 0, y: 0 });
   const angle = useRef(0);
@@ -15,69 +17,221 @@ function CanvasMandala() {
     let raf: number;
 
     const resize = () => {
-      canvas.width = canvas.offsetWidth * window.devicePixelRatio;
-      canvas.height = canvas.offsetHeight * window.devicePixelRatio;
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * window.devicePixelRatio;
+      canvas.height = rect.height * window.devicePixelRatio;
       ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+      mouse.current = { x: rect.width / 2, y: rect.height / 2 };
     };
     resize();
     window.addEventListener("resize", resize);
 
     const onMove = (e: MouseEvent) => {
+      if (!interactive) return;
       const r = canvas.getBoundingClientRect();
       mouse.current = { x: e.clientX - r.left, y: e.clientY - r.top };
     };
     window.addEventListener("mousemove", onMove);
 
+    // Particles orbiting rings
+    const particles = Array.from({ length: 40 }, (_, i) => ({
+      ring: (i % 6) + 2,
+      phase: (i / 40) * Math.PI * 2,
+      speed: (0.3 + Math.random() * 0.7) * (Math.random() > 0.5 ? 1 : -1) * 0.004 * speed,
+      size: 1 + Math.random() * 1.5,
+    }));
+
+    const drawCircle = (cx: number, cy: number, r: number, alpha: number, lw = 0.7) => {
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(139,115,85,${alpha})`;
+      ctx.lineWidth = lw;
+      ctx.stroke();
+    };
+
+    const drawDots = (cx: number, cy: number, n: number, r: number, alpha: number, offset: number, dotR = 1.8) => {
+      for (let i = 0; i < n; i++) {
+        const a = (i / n) * Math.PI * 2 + offset;
+        ctx.beginPath();
+        ctx.arc(cx + Math.cos(a) * r, cy + Math.sin(a) * r, dotR, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(196,185,154,${alpha})`;
+        ctx.fill();
+      }
+    };
+
+    // Lotus petals: offset circles
+    const drawLotus = (cx: number, cy: number, n: number, r1: number, r2: number, alpha: number, offset: number, fill = false) => {
+      const midR = (r1 + r2) / 2;
+      const petalR = (r2 - r1) / 2;
+      for (let i = 0; i < n; i++) {
+        const a = (i / n) * Math.PI * 2 + offset;
+        const px = cx + Math.cos(a) * midR;
+        const py = cy + Math.sin(a) * midR;
+        ctx.beginPath();
+        ctx.arc(px, py, petalR, 0, Math.PI * 2);
+        if (fill) {
+          ctx.fillStyle = `rgba(139,115,85,${alpha * 0.15})`;
+          ctx.fill();
+        }
+        ctx.strokeStyle = `rgba(139,115,85,${alpha})`;
+        ctx.lineWidth = 0.7;
+        ctx.stroke();
+      }
+    };
+
+    // Star polygon
+    const drawStar = (cx: number, cy: number, n: number, r: number, alpha: number, offset: number) => {
+      ctx.beginPath();
+      for (let i = 0; i <= n; i++) {
+        const a = (i / n) * Math.PI * 2 + offset;
+        if (i === 0) ctx.moveTo(cx + Math.cos(a) * r, cy + Math.sin(a) * r);
+        else ctx.lineTo(cx + Math.cos(a) * r, cy + Math.sin(a) * r);
+      }
+      ctx.strokeStyle = `rgba(139,115,85,${alpha})`;
+      ctx.lineWidth = 0.6;
+      ctx.stroke();
+    };
+
+    // Two interlocked triangles (Star of David / Shatkona)
+    const drawTriangle = (cx: number, cy: number, r: number, alpha: number, offset: number) => {
+      ctx.beginPath();
+      for (let i = 0; i < 3; i++) {
+        const a = (i / 3) * Math.PI * 2 + offset;
+        if (i === 0) ctx.moveTo(cx + Math.cos(a) * r, cy + Math.sin(a) * r);
+        else ctx.lineTo(cx + Math.cos(a) * r, cy + Math.sin(a) * r);
+      }
+      ctx.closePath();
+      ctx.strokeStyle = `rgba(139,115,85,${alpha})`;
+      ctx.lineWidth = 0.8;
+      ctx.stroke();
+    };
+
+    // Radial lines
+    const drawSpokes = (cx: number, cy: number, n: number, r1: number, r2: number, alpha: number, offset: number) => {
+      for (let i = 0; i < n; i++) {
+        const a = (i / n) * Math.PI * 2 + offset;
+        ctx.beginPath();
+        ctx.moveTo(cx + Math.cos(a) * r1, cy + Math.sin(a) * r1);
+        ctx.lineTo(cx + Math.cos(a) * r2, cy + Math.sin(a) * r2);
+        ctx.strokeStyle = `rgba(139,115,85,${alpha})`;
+        ctx.lineWidth = 0.6;
+        ctx.stroke();
+      }
+    };
+
     const draw = () => {
       const w = canvas.offsetWidth, h = canvas.offsetHeight;
       ctx.clearRect(0, 0, w, h);
-      angle.current += 0.0015;
+      angle.current += 0.0018 * speed;
+      const t = angle.current;
 
-      const cx = w / 2 + (mouse.current.x - w / 2) * 0.04;
-      const cy = h / 2 + (mouse.current.y - h / 2) * 0.04;
+      const cx = w / 2 + (mouse.current.x - w / 2) * (interactive ? 0.03 : 0);
+      const cy = h / 2 + (mouse.current.y - h / 2) * (interactive ? 0.03 : 0);
 
-      for (let ring = 1; ring <= 7; ring++) {
-        const r = ring * 52;
-        const petals = ring * 6;
-        const alpha = 0.04 + ring * 0.012;
-        ctx.strokeStyle = `rgba(139,115,85,${alpha})`;
-        ctx.lineWidth = 0.6;
+      // ── Center ──
+      ctx.beginPath();
+      ctx.arc(cx, cy, 4, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(139,115,85,0.35)";
+      ctx.fill();
 
+      ctx.beginPath();
+      ctx.arc(cx, cy, 8, 0, Math.PI * 2);
+      ctx.strokeStyle = "rgba(139,115,85,0.2)";
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      // ── Ring 1: 8 inner petals (r 8–34) ──
+      drawLotus(cx, cy, 8, 8, 34, 0.18, t, true);
+      drawCircle(cx, cy, 34, 0.14, 0.8);
+
+      // ── Ring 2: Shatkona triangles (r 50) ──
+      drawTriangle(cx, cy, 48, 0.12, t * -0.7);
+      drawTriangle(cx, cy, 48, 0.12, t * -0.7 + Math.PI / 3);
+      drawCircle(cx, cy, 55, 0.1, 0.7);
+      drawDots(cx, cy, 6, 55, 0.25, t * -0.7);
+
+      // ── Ring 3: 12 lotus petals (r 55–90) ──
+      drawLotus(cx, cy, 12, 55, 90, 0.13, t * 0.8);
+      drawCircle(cx, cy, 90, 0.12, 0.7);
+      drawDots(cx, cy, 12, 90, 0.2, t * 0.8);
+
+      // ── Ring 4: 16-pointed star + spokes (r 110) ──
+      drawStar(cx, cy, 16, 110, 0.08, t * -0.6);
+      drawSpokes(cx, cy, 16, 90, 130, 0.07, t * -0.6);
+      drawCircle(cx, cy, 130, 0.1, 0.7);
+
+      // ── Ring 5: 16 petals (r 130–168) ──
+      drawLotus(cx, cy, 16, 130, 168, 0.1, t * 0.5);
+      drawCircle(cx, cy, 168, 0.1, 0.7);
+      drawDots(cx, cy, 24, 168, 0.16, t * 0.5, 2);
+
+      // ── Ring 6: Geometric octagon + fine spokes ──
+      drawStar(cx, cy, 8, 188, 0.07, t * -0.4 + Math.PI / 8);
+      drawSpokes(cx, cy, 24, 168, 198, 0.06, t * -0.4);
+      drawCircle(cx, cy, 198, 0.09, 0.6);
+
+      // ── Ring 7: 24 outer petals (r 198–240) ──
+      drawLotus(cx, cy, 24, 198, 240, 0.08, t * 0.35);
+      drawCircle(cx, cy, 240, 0.09, 0.6);
+      drawDots(cx, cy, 32, 240, 0.12, t * 0.35, 1.5);
+
+      // ── Ring 8: Final fine ring ──
+      drawSpokes(cx, cy, 32, 240, 270, 0.05, t * -0.3);
+      drawCircle(cx, cy, 270, 0.07, 0.5);
+      drawDots(cx, cy, 48, 270, 0.09, t * -0.3, 1.2);
+
+      // ── Particles orbiting rings ──
+      const ringRadii = [34, 55, 90, 130, 168, 240];
+      particles.forEach(p => {
+        p.phase += p.speed;
+        const r = ringRadii[p.ring - 2] ?? 90;
+        const px = cx + Math.cos(p.phase) * r;
+        const py = cy + Math.sin(p.phase) * r;
         ctx.beginPath();
-        ctx.arc(cx, cy, r, 0, Math.PI * 2);
-        ctx.stroke();
+        ctx.arc(px, py, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(196,185,154,0.5)";
+        ctx.fill();
+      });
 
-        for (let p = 0; p < petals; p++) {
-          const a = (p / petals) * Math.PI * 2 + angle.current * (ring % 2 === 0 ? 1 : -1);
-          const x1 = cx + Math.cos(a) * r;
-          const y1 = cy + Math.sin(a) * r;
-          ctx.beginPath();
-          ctx.moveTo(cx, cy);
-          ctx.lineTo(x1, y1);
-          ctx.stroke();
-
-          if (ring % 2 === 0) {
-            ctx.beginPath();
-            ctx.arc(x1, y1, 3, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(139,115,85,${alpha * 1.5})`;
-            ctx.fill();
-          }
-        }
-      }
       raf = requestAnimationFrame(draw);
     };
     draw();
+
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", resize);
       window.removeEventListener("mousemove", onMove);
     };
-  }, []);
+  }, [interactive, speed]);
 
-  return <canvas ref={ref} className="absolute inset-0 w-full h-full" aria-hidden="true" />;
+  return <canvas ref={ref} className={`absolute inset-0 w-full h-full ${className}`} aria-hidden="true" />;
 }
 
-/* ── Word-by-word reveal ───────────────────────────────────────── */
+/* ── Mandala SVG Ornament (section divider) ───────────────────────── */
+function MandalaOrn({ size = 72, color = "#c4b99a", opacity = 0.6 }: { size?: number; color?: string; opacity?: number }) {
+  const rs = [8, 16, 24, 32];
+  const spokes = 16;
+  return (
+    <svg width={size} height={size} viewBox="-40 -40 80 80" aria-hidden="true" style={{ opacity }}>
+      {/* Rings */}
+      {rs.map(r => <circle key={r} r={r} fill="none" stroke={color} strokeWidth="0.8" />)}
+      {/* Spokes */}
+      {Array.from({ length: spokes }, (_, i) => {
+        const a = (i / spokes) * Math.PI * 2;
+        return <line key={i} x1={Math.cos(a) * 8} y1={Math.sin(a) * 8} x2={Math.cos(a) * 32} y2={Math.sin(a) * 32} stroke={color} strokeWidth="0.6" />;
+      })}
+      {/* Dots at outer ring */}
+      {Array.from({ length: 16 }, (_, i) => {
+        const a = (i / 16) * Math.PI * 2;
+        return <circle key={i} cx={Math.cos(a) * 38} cy={Math.sin(a) * 38} r="1.5" fill={color} />;
+      })}
+      {/* Center */}
+      <circle r="3" fill={color} />
+    </svg>
+  );
+}
+
+/* ── Word-by-word reveal ───────────────────────────────────────────── */
 function SplitReveal({ text, className, style, tag = "h1", delay = 0 }: {
   text: string; className?: string; style?: React.CSSProperties;
   tag?: "h1" | "h2" | "p"; delay?: number;
@@ -105,7 +259,7 @@ function SplitReveal({ text, className, style, tag = "h1", delay = 0 }: {
               display: "inline-block",
               transform: visible ? "translateY(0)" : "translateY(110%)",
               opacity: visible ? 1 : 0,
-              transition: `transform 0.8s cubic-bezier(0.16,1,0.3,1) ${delay + i * 60}ms, opacity 0.6s ease ${delay + i * 60}ms`,
+              transition: `transform 0.9s cubic-bezier(0.16,1,0.3,1) ${delay + i * 70}ms, opacity 0.6s ease ${delay + i * 70}ms`,
             }}>{w}</span>
           </span>
         ))}
@@ -114,7 +268,7 @@ function SplitReveal({ text, className, style, tag = "h1", delay = 0 }: {
   );
 }
 
-/* ── Scroll reveal ─────────────────────────────────────────────── */
+/* ── Scroll reveal ─────────────────────────────────────────────────── */
 function Reveal({ children, className, style, delay = 0 }: {
   children: React.ReactNode; className?: string;
   style?: React.CSSProperties; delay?: number;
@@ -136,7 +290,7 @@ function Reveal({ children, className, style, delay = 0 }: {
   );
 }
 
-/* ── Magnetic button ───────────────────────────────────────────── */
+/* ── Magnetic button ───────────────────────────────────────────────── */
 function MagneticBtn({ children, href, dark = false }: {
   children: React.ReactNode; href: string; dark?: boolean;
 }) {
@@ -167,13 +321,13 @@ function MagneticBtn({ children, href, dark = false }: {
           : "0 8px 24px rgba(139,115,85,0.15)";
         if (!dark) e.currentTarget.style.borderColor = "#8b7355";
       }}
->
+    >
       {children}
     </a>
   );
 }
 
-/* ── Marquee ───────────────────────────────────────────────────── */
+/* ── Marquee ───────────────────────────────────────────────────────── */
 function Marquee({ items }: { items: string[] }) {
   const doubled = [...items, ...items];
   return (
@@ -189,7 +343,7 @@ function Marquee({ items }: { items: string[] }) {
   );
 }
 
-/* ── 3D Service Card ───────────────────────────────────────────── */
+/* ── 3D Service Card ───────────────────────────────────────────────── */
 function ServiceCard({ n, title, body, delay }: { n: string; title: string; body: string; delay: number }) {
   const [hovered, setHovered] = useState(false);
   const [rot, setRot] = useState({ x: 0, y: 0 });
@@ -205,15 +359,22 @@ function ServiceCard({ n, title, body, delay }: { n: string; title: string; body
 
   return (
     <Reveal delay={delay} style={{ perspective: "1000px" }}>
-      <div ref={ref} onMouseEnter={() => setHovered(true)} onMouseLeave={() => { setHovered(false); setRot({ x: 0, y: 0 }); }} onMouseMove={onMove}
+      <div ref={ref}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => { setHovered(false); setRot({ x: 0, y: 0 }); }}
+        onMouseMove={onMove}
         style={{
-          padding: "2.5rem", borderRadius: "12px", position: "relative", overflow: "hidden",
+          padding: "2.5rem", borderRadius: "16px", position: "relative", overflow: "hidden",
           background: "#f5f0e8", border: `1px solid ${hovered ? "#8b7355" : "#c4b99a"}`,
-          transform: `rotateX(${rot.x}deg) rotateY(${rot.y}deg) translateY(${hovered ? -8 : 0}px)`,
-          boxShadow: hovered ? "0 24px 60px rgba(28,16,8,0.12)" : "0 2px 8px rgba(28,16,8,0.04)",
+          transform: `rotateX(${rot.x}deg) rotateY(${rot.y}deg) translateY(${hovered ? -10 : 0}px)`,
+          boxShadow: hovered ? "0 28px 70px rgba(28,16,8,0.14)" : "0 2px 8px rgba(28,16,8,0.04)",
           transition: "border-color 0.3s, box-shadow 0.4s, transform 0.2s ease-out",
           cursor: "default",
         }}>
+        {/* Mandala ornament in card corner */}
+        <div style={{ position: "absolute", top: "1rem", right: "1rem", opacity: hovered ? 0.18 : 0.08, transition: "opacity 0.4s" }}>
+          <MandalaOrn size={64} color="#8b7355" opacity={1} />
+        </div>
         <div style={{
           position: "absolute", top: "1rem", right: "1.5rem", fontSize: "5rem", fontWeight: 700,
           fontFamily: "var(--font-display,serif)", color: "#ede8df", lineHeight: 1, userSelect: "none",
@@ -227,7 +388,7 @@ function ServiceCard({ n, title, body, delay }: { n: string; title: string; body
   );
 }
 
-/* ── Cursor ────────────────────────────────────────────────────── */
+/* ── Custom Cursor (mandala ring) ──────────────────────────────────── */
 function Cursor() {
   const dot = useRef<HTMLDivElement>(null);
   const ring = useRef<HTMLDivElement>(null);
@@ -239,8 +400,8 @@ function Cursor() {
     window.addEventListener("mousemove", move);
     let raf: number;
     const animate = () => {
-      smooth.current.x += (pos.current.x - smooth.current.x) * 0.12;
-      smooth.current.y += (pos.current.y - smooth.current.y) * 0.12;
+      smooth.current.x += (pos.current.x - smooth.current.x) * 0.1;
+      smooth.current.y += (pos.current.y - smooth.current.y) * 0.1;
       if (dot.current) {
         dot.current.style.left = `${pos.current.x}px`;
         dot.current.style.top = `${pos.current.y}px`;
@@ -259,17 +420,24 @@ function Cursor() {
     <>
       <div ref={dot} className="fixed z-[9999] pointer-events-none hidden md:block" style={{
         width: 6, height: 6, borderRadius: "50%", background: "#8b7355",
-        transform: "translate(-50%,-50%)", transition: "none",
-      }} />
-      <div ref={ring} className="fixed z-[9998] pointer-events-none hidden md:block" style={{
-        width: 36, height: 36, borderRadius: "50%", border: "1.5px solid rgba(139,115,85,0.5)",
         transform: "translate(-50%,-50%)",
       }} />
+      <div ref={ring} className="fixed z-[9998] pointer-events-none hidden md:block" style={{
+        width: 40, height: 40, transform: "translate(-50%,-50%)", animation: "spinSlow 8s linear infinite",
+      }}>
+        <svg width="40" height="40" viewBox="-20 -20 40 40">
+          <circle r="18" fill="none" stroke="rgba(139,115,85,0.4)" strokeWidth="1" />
+          {Array.from({ length: 8 }, (_, i) => {
+            const a = (i / 8) * Math.PI * 2;
+            return <circle key={i} cx={Math.cos(a) * 18} cy={Math.sin(a) * 18} r="1.2" fill="rgba(196,185,154,0.6)" />;
+          })}
+        </svg>
+      </div>
     </>
   );
 }
 
-/* ── Scroll Progress Bar ───────────────────────────────────────── */
+/* ── Scroll Progress Bar ───────────────────────────────────────────── */
 function ScrollProgress() {
   const [pct, setPct] = useState(0);
   useEffect(() => {
@@ -282,18 +450,30 @@ function ScrollProgress() {
   }, []);
   return (
     <div className="fixed top-0 left-0 z-[100] h-[2px] pointer-events-none"
-      style={{ width: `${pct}%`, background: "linear-gradient(90deg, #8b7355, #c4b99a)", transition: "width 0.1s" }} />
+      style={{ width: `${pct}%`, background: "linear-gradient(90deg, #8b7355, #c4b99a, #8b7355)", transition: "width 0.1s" }} />
   );
 }
 
-/* ── Main ──────────────────────────────────────────────────────── */
+/* ── Section Divider with Mandala ──────────────────────────────────── */
+function SectionDivider({ light = false }: { light?: boolean }) {
+  return (
+    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "1.5rem", padding: "0 1.5rem" }}>
+      <div style={{ flex: 1, height: 1, background: light ? "rgba(255,255,255,0.06)" : "#c4b99a", opacity: light ? 1 : 0.4 }} />
+      <MandalaOrn size={52} color={light ? "#5c4a32" : "#c4b99a"} opacity={light ? 0.4 : 0.7} />
+      <div style={{ flex: 1, height: 1, background: light ? "rgba(255,255,255,0.06)" : "#c4b99a", opacity: light ? 1 : 0.4 }} />
+    </div>
+  );
+}
+
+/* ── Main ──────────────────────────────────────────────────────────── */
 export default function Home() {
   const [form, setForm] = useState({ name: "", company: "", email: "", message: "" });
   const [sent, setSent] = useState(false);
   const [navScrolled, setNavScrolled] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
-    const fn = () => setNavScrolled(window.scrollY > 50);
+    const fn = () => { setNavScrolled(window.scrollY > 50); setScrollY(window.scrollY); };
     window.addEventListener("scroll", fn);
     return () => window.removeEventListener("scroll", fn);
   }, []);
@@ -336,33 +516,65 @@ export default function Home() {
 
       {/* HERO */}
       <section className="relative min-h-screen flex flex-col items-center justify-center text-center px-6 overflow-hidden">
-        <CanvasMandala />
+        {/* Large hero mandala — parallax shrink on scroll */}
+        <div style={{
+          position: "absolute", inset: 0,
+          transform: `scale(${1 + scrollY * 0.0003}) translateY(${scrollY * 0.15}px)`,
+          opacity: Math.max(0, 1 - scrollY * 0.002),
+          transition: "opacity 0.05s",
+        }}>
+          <CanvasMandala interactive={true} speed={1} />
+        </div>
+
+        {/* Radial gradient overlay for text legibility */}
+        <div style={{
+          position: "absolute", inset: 0,
+          background: "radial-gradient(ellipse 60% 70% at 50% 50%, rgba(245,240,232,0) 30%, rgba(245,240,232,0.85) 100%)",
+          pointerEvents: "none",
+        }} />
+
         <div className="relative z-10 max-w-5xl mx-auto pt-40">
           <Reveal delay={0}>
-            <p style={{ fontSize: "0.7rem", letterSpacing: "0.3em", textTransform: "uppercase", color: "#8b7355", marginBottom: "2rem" }}>
-              Market Access · Experiential Experiences · Emerging Technologies
-            </p>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "1rem", marginBottom: "2rem" }}>
+              <div style={{ width: 32, height: 1, background: "#c4b99a" }} />
+              <p style={{ fontSize: "0.65rem", letterSpacing: "0.35em", textTransform: "uppercase", color: "#8b7355", margin: 0 }}>
+                Market Access · Experiential Experiences · Emerging Technologies
+              </p>
+              <div style={{ width: 32, height: 1, background: "#c4b99a" }} />
+            </div>
           </Reveal>
+
           <SplitReveal text="From Relationships to Real Outcomes."
-            tag="h1" delay={100}
+            tag="h1" delay={150}
             className="font-bold leading-tight mb-8"
             style={{ fontFamily: "var(--font-display,serif)", fontSize: "clamp(2.8rem,7vw,6rem)", color: "#1c1008", justifyContent: "center" }} />
-          <Reveal delay={500}>
+
+          <Reveal delay={600}>
             <p style={{ fontSize: "1.15rem", lineHeight: 1.75, maxWidth: "560px", margin: "0 auto 3rem", color: "#5c4a32" }}>
               Mandala Network opens markets and builds event experiences for Web3 and AI companies
               across Europe, the Middle East, and South Asia.
             </p>
           </Reveal>
-          <Reveal delay={650}>
+
+          <Reveal delay={750}>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <MagneticBtn href="#contact" dark>Work With Us</MagneticBtn>
               <MagneticBtn href="#services">Our Services</MagneticBtn>
             </div>
           </Reveal>
+
+          {/* Mandala ornament below CTA */}
+          <Reveal delay={900}>
+            <div style={{ display: "flex", justifyContent: "center", marginTop: "3rem" }}>
+              <MandalaOrn size={44} color="#8b7355" opacity={0.35} />
+            </div>
+          </Reveal>
         </div>
+
+        {/* Scroll cue */}
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-          style={{ color: "#c4b99a", animation: "fadeUp 1s ease 1.2s both" }}>
-          <span style={{ fontSize: "0.65rem", letterSpacing: "0.25em", textTransform: "uppercase" }}>Scroll</span>
+          style={{ color: "#c4b99a", animation: "fadeUp 1s ease 1.4s both" }}>
+          <span style={{ fontSize: "0.6rem", letterSpacing: "0.3em", textTransform: "uppercase" }}>Scroll</span>
           <div style={{ width: 1, height: 48, background: "linear-gradient(to bottom,#c4b99a,transparent)", animation: "pulse 2s ease infinite" }} />
         </div>
       </section>
@@ -386,17 +598,38 @@ export default function Home() {
             </Reveal>
           ))}
         </div>
+        <SectionDivider light />
+        <div style={{ height: "2rem" }} />
       </div>
 
       {/* ABOUT */}
-      <section id="about" className="py-32 md:py-44 px-6 md:px-14" style={{ borderTop: "1px solid #c4b99a" }}>
-        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-20 items-center">
+      <section id="about" className="py-32 md:py-44 px-6 md:px-14 relative overflow-hidden">
+        {/* Large faded mandala behind quote */}
+        <div style={{
+          position: "absolute", top: "50%", left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: 600, height: 600, opacity: 0.04, pointerEvents: "none",
+        }}>
+          <CanvasMandala interactive={false} speed={0.4} />
+        </div>
+
+        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-20 items-center relative z-10">
           <div>
-            <Reveal><p style={{ fontSize: "0.7rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "#8b7355", marginBottom: "2rem" }}>About</p></Reveal>
+            <Reveal>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "2rem" }}>
+                <MandalaOrn size={32} color="#8b7355" opacity={0.7} />
+                <p style={{ fontSize: "0.7rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "#8b7355", margin: 0 }}>About</p>
+              </div>
+            </Reveal>
             <Reveal delay={100}>
               <h2 style={{ fontFamily: "var(--font-display,serif)", fontSize: "clamp(2.2rem,4.5vw,4rem)", fontWeight: 700, color: "#1c1008", lineHeight: 1.15 }}>
-                “The right rooms. The right people.”
+                &ldquo;The right rooms.<br />The right people.&rdquo;
               </h2>
+            </Reveal>
+            <Reveal delay={250}>
+              <div style={{ marginTop: "2.5rem" }}>
+                <MandalaOrn size={40} color="#c4b99a" opacity={0.5} />
+              </div>
             </Reveal>
           </div>
           <div>
@@ -404,18 +637,27 @@ export default function Home() {
               <p>We are Mandala Network — a boutique market access and events firm working exclusively with Web3 and AI companies across Europe, the Middle East &amp; North Africa, and South Asia.</p>
               <p>Every engagement gets our full attention, our deepest relationships, and our best work. When you work with Mandala Network, you work with a team as invested in your success as you are.</p>
               <p>The result: faster market entry, stronger partnerships, and event experiences designed to actually move deals — not just fill rooms.</p>
-              <div style={{ paddingTop: "1.5rem", borderTop: "1px solid #c4b99a" }}>
-                <p style={{ fontSize: "0.7rem", letterSpacing: "0.25em", textTransform: "uppercase", color: "#8b7355" }}>Europe · MENA · South Asia</p>
+              <div style={{ paddingTop: "1.5rem", borderTop: "1px solid #c4b99a", display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                <MandalaOrn size={24} color="#8b7355" opacity={0.6} />
+                <p style={{ fontSize: "0.7rem", letterSpacing: "0.25em", textTransform: "uppercase", color: "#8b7355", margin: 0 }}>Europe · MENA · South Asia</p>
               </div>
             </Reveal>
           </div>
         </div>
+        <div style={{ marginTop: "5rem" }}>
+          <SectionDivider />
+        </div>
       </section>
 
       {/* SERVICES */}
-      <section id="services" className="py-32 md:py-44 px-6 md:px-14" style={{ background: "#ede8df", borderTop: "1px solid #c4b99a" }}>
+      <section id="services" className="py-32 md:py-44 px-6 md:px-14 relative" style={{ background: "#ede8df" }}>
         <div className="max-w-6xl mx-auto">
-          <Reveal><p style={{ fontSize: "0.7rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "#8b7355", marginBottom: "1rem" }}>What We Do</p></Reveal>
+          <Reveal>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1rem" }}>
+              <MandalaOrn size={32} color="#8b7355" opacity={0.7} />
+              <p style={{ fontSize: "0.7rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "#8b7355", margin: 0 }}>What We Do</p>
+            </div>
+          </Reveal>
           <SplitReveal text="Three things. Done exceptionally well." tag="h2" delay={100}
             style={{ fontFamily: "var(--font-display,serif)", fontSize: "clamp(2rem,4vw,3.5rem)", fontWeight: 700, color: "#1c1008", marginBottom: "4rem" }} />
           <div className="grid md:grid-cols-3 gap-6">
@@ -427,12 +669,20 @@ export default function Home() {
               body="A small number of clients. Full attention. No dilution. Quality is the only metric that matters." />
           </div>
         </div>
+        <div style={{ marginTop: "5rem" }}>
+          <SectionDivider />
+        </div>
       </section>
 
       {/* DEVCON MUMBAI */}
-      <section id="devconmumbai" className="py-32 md:py-44 px-6 md:px-14" style={{ borderTop: "1px solid #c4b99a" }}>
+      <section id="devconmumbai" className="py-32 md:py-44 px-6 md:px-14">
         <div className="max-w-6xl mx-auto">
-          <Reveal><p style={{ fontSize: "0.7rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "#8b7355", marginBottom: "1rem" }}>Upcoming Event</p></Reveal>
+          <Reveal>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1rem" }}>
+              <MandalaOrn size={32} color="#8b7355" opacity={0.7} />
+              <p style={{ fontSize: "0.7rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "#8b7355", margin: 0 }}>Upcoming Event</p>
+            </div>
+          </Reveal>
           <SplitReveal text="Devcon Mumbai." tag="h2" delay={100}
             style={{ fontFamily: "var(--font-display,serif)", fontSize: "clamp(2.2rem,5vw,4rem)", fontWeight: 700, color: "#1c1008", marginBottom: "1rem" }} />
           <Reveal delay={200}>
@@ -464,12 +714,21 @@ export default function Home() {
       {/* CONTACT */}
       <section id="contact" className="py-32 md:py-44 px-6 md:px-14 relative overflow-hidden"
         style={{ background: "#1c1008", borderTop: "1px solid #2d1f14" }}>
-        <div style={{ position: "absolute", right: "-80px", top: "50%", transform: "translateY(-50%)", opacity: 0.04, pointerEvents: "none", width: 520, height: 520 }}>
-          <CanvasMandala />
+        {/* Large background mandala */}
+        <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "flex-end", pointerEvents: "none", overflow: "hidden" }}>
+          <div style={{ width: 700, height: 700, opacity: 0.07, flexShrink: 0, marginRight: "-120px" }}>
+            <CanvasMandala interactive={false} speed={0.5} />
+          </div>
         </div>
+
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-20 relative z-10">
           <div>
-            <Reveal><p style={{ fontSize: "0.7rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "#8b7355", marginBottom: "1.5rem" }}>Contact</p></Reveal>
+            <Reveal>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1.5rem" }}>
+                <MandalaOrn size={32} color="#8b7355" opacity={0.7} />
+                <p style={{ fontSize: "0.7rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "#8b7355", margin: 0 }}>Contact</p>
+              </div>
+            </Reveal>
             <SplitReveal text="Let's Talk." tag="h2" delay={100}
               style={{ fontFamily: "var(--font-display,serif)", fontSize: "clamp(2.8rem,6vw,5rem)", fontWeight: 700, color: "#f5f0e8", marginBottom: "1.5rem" }} />
             <Reveal delay={300}>
@@ -497,8 +756,8 @@ export default function Home() {
           <Reveal delay={200}>
             {sent ? (
               <div className="flex flex-col items-center justify-center h-full text-center" style={{ paddingTop: "4rem" }}>
-                <div style={{ width: 64, height: 64, borderRadius: "50%", background: "rgba(139,115,85,0.15)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "1.5rem" }}>
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#8b7355" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+                <div style={{ marginBottom: "1.5rem" }}>
+                  <MandalaOrn size={80} color="#8b7355" opacity={0.6} />
                 </div>
                 <h3 style={{ fontSize: "1.2rem", fontWeight: 600, color: "#f5f0e8", marginBottom: "0.5rem" }}>Message received.</h3>
                 <p style={{ color: "#8b7355" }}>We&apos;ll be in touch shortly.</p>
@@ -540,13 +799,16 @@ export default function Home() {
       </section>
 
       {/* FOOTER */}
-      <footer className="px-6 md:px-14 py-10" style={{ background: "#f5f0e8", borderTop: "1px solid #c4b99a" }}>
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div>
-            <div style={{ fontWeight: 700, fontSize: "0.95rem", color: "#1c1008", marginBottom: "0.25rem" }}>Mandala Network</div>
-            <div style={{ fontSize: "0.65rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "#8b7355" }}>From Relationships to Real Outcomes</div>
+      <footer className="px-6 md:px-14 py-12" style={{ background: "#f5f0e8", borderTop: "1px solid #c4b99a" }}>
+        <div className="max-w-6xl mx-auto flex flex-col items-center gap-6">
+          <MandalaOrn size={48} color="#c4b99a" opacity={0.6} />
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 w-full">
+            <div>
+              <div style={{ fontWeight: 700, fontSize: "0.95rem", color: "#1c1008", marginBottom: "0.25rem" }}>Mandala Network</div>
+              <div style={{ fontSize: "0.65rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "#8b7355" }}>From Relationships to Real Outcomes</div>
+            </div>
+            <p style={{ fontSize: "0.75rem", color: "#8b7355" }}>&copy; {new Date().getFullYear()} Mandala Network. All rights reserved.</p>
           </div>
-          <p style={{ fontSize: "0.75rem", color: "#8b7355" }}>&copy; {new Date().getFullYear()} Mandala Network. All rights reserved.</p>
         </div>
       </footer>
 
@@ -554,6 +816,7 @@ export default function Home() {
         @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
         @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
         @keyframes pulse { 0%,100% { opacity:0.4; } 50% { opacity:1; } }
+        @keyframes spinSlow { from { transform:translate(-50%,-50%) rotate(0deg); } to { transform:translate(-50%,-50%) rotate(360deg); } }
         * { box-sizing: border-box; }
       `}</style>
     </div>
