@@ -337,7 +337,7 @@ export default function Home() {
       {/* HERO */}
       <section className="relative min-h-screen flex flex-col items-center justify-center text-center px-6 overflow-hidden">
         <CanvasMandala />
-        <div className="relative z-10 max-w-5xl mx-auto pt-20">
+        <div className="relative z-10 max-w-5xl mx-auto pt-40">
           <Reveal delay={0}>
             <p style={{ fontSize: "0.7rem", letterSpacing: "0.3em", textTransform: "uppercase", color: "#8b7355", marginBottom: "2rem" }}>
               Market Access · Experiential Experiences · Emerging Technologies
