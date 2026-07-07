@@ -345,13 +345,13 @@ function Marquee({ items }: { items: string[] }) {
 
 /* ── Client Logo Strip ─────────────────────────────────────────────── */
 const CLIENTS = [
-  { name: "Starknet Foundation", abbr: "SF" },
-  { name: "0G Foundation", abbr: "0G" },
-  { name: "Paris Blockchain Week", abbr: "PB" },
-  { name: "Somnia Network", abbr: "SN" },
-  { name: "AWS", abbr: "AW" },
-  { name: "Istanbul Blockchain Week", abbr: "IB" },
-  { name: "BlockDown Festival", abbr: "BD" },
+  { name: "Starknet Foundation", logo: "/logos/starknet.svg" },
+  { name: "0G Foundation",       logo: "/logos/0g.svg" },
+  { name: "Paris Blockchain Week", logo: "/logos/pbw.svg" },
+  { name: "Somnia Network",      logo: "/logos/somnia.svg" },
+  { name: "AWS",                 logo: "/logos/aws.svg" },
+  { name: "Istanbul Blockchain Week", logo: "/logos/ibw.svg" },
+  { name: "BlockDown Festival",  logo: "/logos/blockdown.svg" },
 ];
 
 function ClientStrip() {
@@ -361,19 +361,13 @@ function ClientStrip() {
       <p style={{ textAlign: "center", fontSize: "0.62rem", letterSpacing: "0.3em", textTransform: "uppercase", color: "#c4b99a", marginBottom: "2.5rem" }}>
         Trusted by leading teams in Web3 &amp; AI
       </p>
-      <div style={{ display: "flex", animation: "marquee 36s linear infinite", width: "max-content" }}>
+      <div style={{ display: "flex", alignItems: "center", animation: "marquee 36s linear infinite", width: "max-content" }}>
         {doubled.map((c, i) => (
-          <div key={i} style={{ display: "flex", alignItems: "center", gap: "0.85rem", padding: "0 3rem", flexShrink: 0 }}>
-            {/* Monogram circle */}
-            <div style={{
-              width: 38, height: 38, borderRadius: "50%",
-              border: "1px solid #c4b99a",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              flexShrink: 0,
-            }}>
-              <span style={{ fontSize: "0.65rem", fontWeight: 600, letterSpacing: "0.05em", color: "#8b7355" }}>{c.abbr}</span>
-            </div>
-            <span style={{ fontSize: "0.85rem", fontWeight: 500, color: "#5c4a32", whiteSpace: "nowrap", letterSpacing: "0.01em" }}>{c.name}</span>
+          <div key={i} style={{ display: "flex", alignItems: "center", padding: "0 3.5rem", flexShrink: 0, opacity: 0.65, transition: "opacity 0.3s" }}
+            onMouseEnter={e => (e.currentTarget.style.opacity = "1")}
+            onMouseLeave={e => (e.currentTarget.style.opacity = "0.65")}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={c.logo} alt={c.name} style={{ height: 28, width: "auto", display: "block", filter: "grayscale(100%)" }} />
           </div>
         ))}
       </div>
@@ -533,7 +527,7 @@ export default function Home() {
           transition: "all 0.5s ease",
         }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/Mandala%20Network%20Logo2.svg" alt="Mandala Network" style={{ height: 52, mixBlendMode: "multiply" }}
+        <img src="/Mandala%20Network%20Logo2.svg" alt="Mandala Network" style={{ height: 130, mixBlendMode: "multiply" }}
           onError={e => { e.currentTarget.style.display = "none"; (e.currentTarget.nextElementSibling as HTMLElement)!.style.display = "block"; }} />
         <span style={{ display: "none", fontWeight: 700, color: "#1c1008" }}>Mandala Network</span>
         <div className="flex items-center gap-8">
