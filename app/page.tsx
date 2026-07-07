@@ -345,16 +345,13 @@ function Marquee({ items }: { items: string[] }) {
 
 /* ── Client Logo Strip ─────────────────────────────────────────────── */
 const CLIENTS = [
-  { name: "Ethereum Foundation", abbr: "EF" },
-  { name: "Polygon Labs", abbr: "PL" },
-  { name: "Binance", abbr: "BN" },
-  { name: "Animoca Brands", abbr: "AB" },
-  { name: "Outlier Ventures", abbr: "OV" },
-  { name: "Consensys", abbr: "CS" },
-  { name: "Chainlink", abbr: "CL" },
-  { name: "Aptos", abbr: "AP" },
-  { name: "Hedera", abbr: "HD" },
-  { name: "Near Protocol", abbr: "NP" },
+  { name: "Starknet Foundation", abbr: "SF" },
+  { name: "0G Foundation", abbr: "0G" },
+  { name: "Paris Blockchain Week", abbr: "PB" },
+  { name: "Somnia Network", abbr: "SN" },
+  { name: "AWS", abbr: "AW" },
+  { name: "Istanbul Blockchain Week", abbr: "IB" },
+  { name: "BlockDown Festival", abbr: "BD" },
 ];
 
 function ClientStrip() {
