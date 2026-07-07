@@ -357,8 +357,8 @@ const CLIENTS = [
 function ClientStrip() {
   const doubled = [...CLIENTS, ...CLIENTS];
   return (
-    <div style={{ background: "#f5f0e8", padding: "52px 0", borderTop: "1px solid rgba(196,185,154,0.35)", borderBottom: "1px solid rgba(196,185,154,0.35)", overflow: "hidden" }}>
-      <p style={{ textAlign: "center", fontSize: "0.62rem", letterSpacing: "0.3em", textTransform: "uppercase", color: "#c4b99a", marginBottom: "2.5rem" }}>
+    <div style={{ background: "#f5f0e8", padding: "32px 0", borderTop: "1px solid rgba(196,185,154,0.35)", borderBottom: "1px solid rgba(196,185,154,0.35)", overflow: "hidden" }}>
+      <p style={{ textAlign: "center", fontSize: "0.62rem", letterSpacing: "0.3em", textTransform: "uppercase", color: "#c4b99a", marginBottom: "1.5rem" }}>
         Trusted by leading teams in Web3 &amp; AI
       </p>
       <div style={{ display: "flex", alignItems: "center", animation: "marquee 36s linear infinite", width: "max-content" }}>
@@ -527,7 +527,7 @@ export default function Home() {
           transition: "all 0.5s ease",
         }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/Mandala%20Network%20Logo2.svg" alt="Mandala Network" style={{ height: 130, mixBlendMode: "multiply" }}
+        <img src="/Mandala%20Network%20Logo2.svg" alt="Mandala Network" style={{ height: "auto", width: "auto", maxHeight: 72, maxWidth: 220, mixBlendMode: "multiply", display: "block" }}
           onError={e => { e.currentTarget.style.display = "none"; (e.currentTarget.nextElementSibling as HTMLElement)!.style.display = "block"; }} />
         <span style={{ display: "none", fontWeight: 700, color: "#1c1008" }}>Mandala Network</span>
         <div className="flex items-center gap-8">
