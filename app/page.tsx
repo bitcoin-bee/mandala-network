@@ -343,6 +343,47 @@ function Marquee({ items }: { items: string[] }) {
   );
 }
 
+/* ── Client Logo Strip ─────────────────────────────────────────────── */
+const CLIENTS = [
+  { name: "Ethereum Foundation", abbr: "EF" },
+  { name: "Polygon Labs", abbr: "PL" },
+  { name: "Binance", abbr: "BN" },
+  { name: "Animoca Brands", abbr: "AB" },
+  { name: "Outlier Ventures", abbr: "OV" },
+  { name: "Consensys", abbr: "CS" },
+  { name: "Chainlink", abbr: "CL" },
+  { name: "Aptos", abbr: "AP" },
+  { name: "Hedera", abbr: "HD" },
+  { name: "Near Protocol", abbr: "NP" },
+];
+
+function ClientStrip() {
+  const doubled = [...CLIENTS, ...CLIENTS];
+  return (
+    <div style={{ background: "#f5f0e8", padding: "52px 0", borderTop: "1px solid rgba(196,185,154,0.35)", borderBottom: "1px solid rgba(196,185,154,0.35)", overflow: "hidden" }}>
+      <p style={{ textAlign: "center", fontSize: "0.62rem", letterSpacing: "0.3em", textTransform: "uppercase", color: "#c4b99a", marginBottom: "2.5rem" }}>
+        Trusted by leading teams in Web3 &amp; AI
+      </p>
+      <div style={{ display: "flex", animation: "marquee 36s linear infinite", width: "max-content" }}>
+        {doubled.map((c, i) => (
+          <div key={i} style={{ display: "flex", alignItems: "center", gap: "0.85rem", padding: "0 3rem", flexShrink: 0 }}>
+            {/* Monogram circle */}
+            <div style={{
+              width: 38, height: 38, borderRadius: "50%",
+              border: "1px solid #c4b99a",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              flexShrink: 0,
+            }}>
+              <span style={{ fontSize: "0.65rem", fontWeight: 600, letterSpacing: "0.05em", color: "#8b7355" }}>{c.abbr}</span>
+            </div>
+            <span style={{ fontSize: "0.85rem", fontWeight: 500, color: "#5c4a32", whiteSpace: "nowrap", letterSpacing: "0.01em" }}>{c.name}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 /* ── 3D Service Card ───────────────────────────────────────────────── */
 function ServiceCard({ n, title, body, delay }: { n: string; title: string; body: string; delay: number }) {
   const [hovered, setHovered] = useState(false);
@@ -495,7 +536,7 @@ export default function Home() {
           transition: "all 0.5s ease",
         }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/Mandala%20Network%20Logo2.svg" alt="Mandala Network" style={{ height: 240, mixBlendMode: "multiply" }}
+        <img src="/Mandala%20Network%20Logo2.svg" alt="Mandala Network" style={{ height: 52, mixBlendMode: "multiply" }}
           onError={e => { e.currentTarget.style.display = "none"; (e.currentTarget.nextElementSibling as HTMLElement)!.style.display = "block"; }} />
         <span style={{ display: "none", fontWeight: 700, color: "#1c1008" }}>Mandala Network</span>
         <div className="flex items-center gap-8">
@@ -601,6 +642,9 @@ export default function Home() {
         <SectionDivider light />
         <div style={{ height: "2rem" }} />
       </div>
+
+      {/* CLIENT STRIP */}
+      <ClientStrip />
 
       {/* ABOUT */}
       <section id="about" className="py-32 md:py-44 px-6 md:px-14 relative overflow-hidden">
