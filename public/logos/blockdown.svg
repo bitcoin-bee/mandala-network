@@ -1,5 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 40">
-  <rect x="4" y="8" width="16" height="16" rx="2" fill="#1c1008" opacity="0.8"/>
-  <rect x="4" y="27" width="16" height="8" rx="2" fill="#1c1008" opacity="0.45"/>
-  <text x="28" y="27" font-family="system-ui,sans-serif" font-size="13" font-weight="600" fill="#1c1008" letter-spacing="0.3" opacity="0.85">BLOCKDOWN</text>
-</svg>
