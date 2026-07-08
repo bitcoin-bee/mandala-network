@@ -30,34 +30,8 @@ export default function ComingSoon() {
       minHeight: "100vh",
       position: "relative",
       overflow: "hidden",
-      background: "#e8e0d0",
+      background: "#cec3ae",
     }}>
-      {/* Full-bleed background: the mandala logo SVG */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="/logo.svg"
-        alt=""
-        aria-hidden="true"
-        style={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: "100vmax",
-          height: "100vmax",
-          objectFit: "contain",
-          opacity: 0.85,
-          mixBlendMode: "multiply",
-          pointerEvents: "none",
-          userSelect: "none",
-        }}
-      />
-
-      {/* Subtle radial vignette */}
-      <div style={{
-        position: "absolute", inset: 0, pointerEvents: "none",
-        background: "radial-gradient(ellipse 85% 85% at 50% 50%, transparent 40%, rgba(206,196,178,0.6) 100%)",
-      }} />
 
       {/* NAV */}
       <nav style={{
@@ -67,25 +41,13 @@ export default function ComingSoon() {
         opacity: visible ? 1 : 0,
         transition: "opacity 0.8s ease",
       }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
-          {/* Mandala icon — small SVG mark */}
-          <svg width="26" height="26" viewBox="-13 -13 26 26" aria-hidden="true">
-            <circle r="11" fill="none" stroke="#26110C" strokeWidth="0.8" opacity="0.6" />
-            <circle r="7" fill="none" stroke="#26110C" strokeWidth="0.7" opacity="0.5" />
-            <circle r="3.5" fill="none" stroke="#26110C" strokeWidth="0.7" opacity="0.5" />
-            {[0,1,2,3,4,5,6,7].map(i => {
-              const a = (i / 8) * Math.PI * 2;
-              return <line key={i} x1={Math.cos(a)*3.5} y1={Math.sin(a)*3.5} x2={Math.cos(a)*11} y2={Math.sin(a)*11} stroke="#26110C" strokeWidth="0.5" opacity="0.4" />;
-            })}
-            <circle r="1.5" fill="#26110C" opacity="0.6" />
-          </svg>
-          <span className={archivo.className} style={{
-            fontSize: "0.8rem", fontWeight: 700, letterSpacing: "0.18em",
-            textTransform: "uppercase", color: "#26110C",
-          }}>
-            Mandala Network
-          </span>
-        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/Mandala%20Network%20Logo2.svg"
+          alt="Mandala Network"
+          style={{ height: "auto", maxHeight: 72, width: "auto", maxWidth: 200, mixBlendMode: "multiply" }}
+          onError={e => { e.currentTarget.style.display = "none"; }}
+        />
       </nav>
 
       {/* MAIN CONTENT */}
