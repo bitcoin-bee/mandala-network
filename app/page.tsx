@@ -11,370 +11,223 @@ const cormorant = Cormorant_Garamond({
 
 const archivo = Archivo({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
-/* ── Shatkona Mandala Canvas ───────────────────────────────────── */
-function ShatkonaMandala() {
-  const ref = useRef<HTMLCanvasElement>(null);
-  const mouse = useRef({ x: 0.5, y: 0.5 });
-  const angle = useRef(0);
-
-  useEffect(() => {
-    const canvas = ref.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d")!;
-    let raf: number;
-
-    const resize = () => {
-      canvas.width = canvas.offsetWidth * window.devicePixelRatio;
-      canvas.height = canvas.offsetHeight * window.devicePixelRatio;
-      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
-    };
-    resize();
-    window.addEventListener("resize", resize);
-
-    const onMove = (e: MouseEvent) => {
-      const r = canvas.getBoundingClientRect();
-      mouse.current = {
-        x: (e.clientX - r.left) / r.width,
-        y: (e.clientY - r.top) / r.height,
-      };
-    };
-    window.addEventListener("mousemove", onMove);
-
-    const col = (a: number) => `rgba(38,17,12,${a})`;
-
-    const drawTriangle = (
-      cx: number, cy: number, r: number,
-      offset: number, alpha: number, lw: number
-    ) => {
-      ctx.beginPath();
-      for (let i = 0; i < 3; i++) {
-        const a = (i / 3) * Math.PI * 2 + offset;
-        if (i === 0) ctx.moveTo(cx + Math.cos(a) * r, cy + Math.sin(a) * r);
-        else ctx.lineTo(cx + Math.cos(a) * r, cy + Math.sin(a) * r);
-      }
-      ctx.closePath();
-      ctx.strokeStyle = col(alpha);
-      ctx.lineWidth = lw;
-      ctx.stroke();
-    };
-
-    const drawRing = (cx: number, cy: number, r: number, alpha: number, lw: number) => {
-      ctx.beginPath();
-      ctx.arc(cx, cy, r, 0, Math.PI * 2);
-      ctx.strokeStyle = col(alpha);
-      ctx.lineWidth = lw;
-      ctx.stroke();
-    };
-
-    const drawDots = (cx: number, cy: number, n: number, r: number, alpha: number, offset: number) => {
-      for (let i = 0; i < n; i++) {
-        const a = (i / n) * Math.PI * 2 + offset;
-        ctx.beginPath();
-        ctx.arc(cx + Math.cos(a) * r, cy + Math.sin(a) * r, 2.5, 0, Math.PI * 2);
-        ctx.fillStyle = col(alpha);
-        ctx.fill();
-      }
-    };
-
-    const drawLotus = (cx: number, cy: number, n: number, r1: number, r2: number, alpha: number, offset: number) => {
-      const mid = (r1 + r2) / 2;
-      const pr = (r2 - r1) / 2;
-      for (let i = 0; i < n; i++) {
-        const a = (i / n) * Math.PI * 2 + offset;
-        ctx.beginPath();
-        ctx.arc(cx + Math.cos(a) * mid, cy + Math.sin(a) * mid, pr, 0, Math.PI * 2);
-        ctx.strokeStyle = col(alpha);
-        ctx.lineWidth = 0.8;
-        ctx.stroke();
-      }
-    };
-
-    const drawSpokes = (cx: number, cy: number, n: number, r1: number, r2: number, alpha: number, offset: number) => {
-      for (let i = 0; i < n; i++) {
-        const a = (i / n) * Math.PI * 2 + offset;
-        ctx.beginPath();
-        ctx.moveTo(cx + Math.cos(a) * r1, cy + Math.sin(a) * r1);
-        ctx.lineTo(cx + Math.cos(a) * r2, cy + Math.sin(a) * r2);
-        ctx.strokeStyle = col(alpha);
-        ctx.lineWidth = 0.6;
-        ctx.stroke();
-      }
-    };
-
-    const draw = () => {
-      const w = canvas.offsetWidth, h = canvas.offsetHeight;
-      ctx.clearRect(0, 0, w, h);
-      angle.current += 0.002;
-      const t = angle.current;
-
-      const cx = w / 2 + (mouse.current.x - 0.5) * w * 0.03;
-      const cy = h / 2 + (mouse.current.y - 0.5) * h * 0.03;
-
-      // Scale based on viewport
-      const base = Math.min(w, h) * 0.38;
-
-      // Center dot
-      ctx.beginPath();
-      ctx.arc(cx, cy, 4, 0, Math.PI * 2);
-      ctx.fillStyle = col(0.5);
-      ctx.fill();
-
-      // Inner circle
-      drawRing(cx, cy, base * 0.12, 0.25, 1);
-
-      // 8 inner lotus petals
-      drawLotus(cx, cy, 8, base * 0.12, base * 0.28, 0.18, t);
-      drawRing(cx, cy, base * 0.28, 0.2, 0.8);
-
-      // Shatkona: two interlocked triangles (the core motif from the design)
-      drawTriangle(cx, cy, base * 0.44, -Math.PI / 2 + t * 0.4, 0.55, 1.4);
-      drawTriangle(cx, cy, base * 0.44, Math.PI / 2 + Math.PI / 3 - t * 0.4, 0.55, 1.4);
-
-      // Ring around shatkona
-      drawRing(cx, cy, base * 0.5, 0.18, 0.8);
-      drawDots(cx, cy, 12, base * 0.5, 0.35, t * 0.6);
-
-      // 12 lotus petals outer
-      drawLotus(cx, cy, 12, base * 0.5, base * 0.68, 0.13, -t * 0.5);
-      drawRing(cx, cy, base * 0.68, 0.16, 0.8);
-
-      // Spokes
-      drawSpokes(cx, cy, 24, base * 0.68, base * 0.78, 0.08, -t * 0.3);
-      drawRing(cx, cy, base * 0.78, 0.13, 0.7);
-      drawDots(cx, cy, 24, base * 0.78, 0.2, t * 0.4);
-
-      // Outermost ring
-      drawRing(cx, cy, base * 0.9, 0.08, 0.6);
-      drawDots(cx, cy, 36, base * 0.9, 0.12, -t * 0.25);
-
-      raf = requestAnimationFrame(draw);
-    };
-    draw();
-
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener("resize", resize);
-      window.removeEventListener("mousemove", onMove);
-    };
-  }, []);
-
-  return <canvas ref={ref} className="absolute inset-0 w-full h-full" aria-hidden="true" />;
-}
-
-/* ── Countdown ─────────────────────────────────────────────────── */
-function useCountdown(target: Date) {
-  const [time, setTime] = useState({ d: 0, h: 0, m: 0, s: 0 });
-  useEffect(() => {
-    const tick = () => {
-      const diff = Math.max(0, target.getTime() - Date.now());
-      setTime({
-        d: Math.floor(diff / 86400000),
-        h: Math.floor((diff % 86400000) / 3600000),
-        m: Math.floor((diff % 3600000) / 60000),
-        s: Math.floor((diff % 60000) / 1000),
-      });
-    };
-    tick();
-    const id = setInterval(tick, 1000);
-    return () => clearInterval(id);
-  }, [target]);
-  return time;
-}
-
-/* ── Page ──────────────────────────────────────────────────────── */
 export default function ComingSoon() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [visible, setVisible] = useState(false);
-
-  // Target date — update as needed
-  const target = new Date("2025-11-01T00:00:00Z");
-  const { d, h, m, s } = useCountdown(target);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    const t = setTimeout(() => setVisible(true), 100);
+    const t = setTimeout(() => setVisible(true), 80);
     return () => clearTimeout(t);
   }, []);
 
-  const pad = (n: number) => String(n).padStart(2, "0");
-
   return (
-    <div
-      className={`${cormorant.className}`}
-      style={{
+    <div style={{
+      minHeight: "100vh",
+      position: "relative",
+      overflow: "hidden",
+      background: "#e8e0d0",
+    }}>
+      {/* Full-bleed background: the mandala logo SVG */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/logo.svg"
+        alt=""
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: "100vmax",
+          height: "100vmax",
+          objectFit: "contain",
+          opacity: 0.85,
+          mixBlendMode: "multiply",
+          pointerEvents: "none",
+          userSelect: "none",
+        }}
+      />
+
+      {/* Subtle radial vignette */}
+      <div style={{
+        position: "absolute", inset: 0, pointerEvents: "none",
+        background: "radial-gradient(ellipse 85% 85% at 50% 50%, transparent 40%, rgba(206,196,178,0.6) 100%)",
+      }} />
+
+      {/* NAV */}
+      <nav style={{
+        position: "absolute", top: 0, left: 0, right: 0,
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+        padding: "1.5rem 2rem",
+        opacity: visible ? 1 : 0,
+        transition: "opacity 0.8s ease",
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+          {/* Mandala icon — small SVG mark */}
+          <svg width="26" height="26" viewBox="-13 -13 26 26" aria-hidden="true">
+            <circle r="11" fill="none" stroke="#26110C" strokeWidth="0.8" opacity="0.6" />
+            <circle r="7" fill="none" stroke="#26110C" strokeWidth="0.7" opacity="0.5" />
+            <circle r="3.5" fill="none" stroke="#26110C" strokeWidth="0.7" opacity="0.5" />
+            {[0,1,2,3,4,5,6,7].map(i => {
+              const a = (i / 8) * Math.PI * 2;
+              return <line key={i} x1={Math.cos(a)*3.5} y1={Math.sin(a)*3.5} x2={Math.cos(a)*11} y2={Math.sin(a)*11} stroke="#26110C" strokeWidth="0.5" opacity="0.4" />;
+            })}
+            <circle r="1.5" fill="#26110C" opacity="0.6" />
+          </svg>
+          <span className={archivo.className} style={{
+            fontSize: "0.8rem", fontWeight: 700, letterSpacing: "0.18em",
+            textTransform: "uppercase", color: "#26110C",
+          }}>
+            Mandala Network
+          </span>
+        </div>
+      </nav>
+
+      {/* MAIN CONTENT */}
+      <main style={{
         minHeight: "100vh",
-        background: "#cec3ae",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        position: "relative",
-        overflow: "hidden",
-        cursor: "default",
-      }}
-    >
-      {/* Full-screen mandala */}
-      <ShatkonaMandala />
-
-      {/* Radial vignette for depth */}
-      <div style={{
-        position: "absolute", inset: 0, pointerEvents: "none",
-        background: "radial-gradient(ellipse 70% 70% at 50% 50%, transparent 30%, rgba(206,195,174,0.55) 100%)",
-      }} />
-
-      {/* Content */}
-      <div style={{
-        position: "relative", zIndex: 10,
-        display: "flex", flexDirection: "column", alignItems: "center",
-        textAlign: "center", padding: "2rem",
+        padding: "6rem 1.5rem 3rem",
+        position: "relative", zIndex: 1,
+        textAlign: "center",
         opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(20px)",
-        transition: "opacity 1.2s ease, transform 1.2s cubic-bezier(0.16,1,0.3,1)",
+        transform: visible ? "translateY(0)" : "translateY(16px)",
+        transition: "opacity 1s ease 0.1s, transform 1s cubic-bezier(0.16,1,0.3,1) 0.1s",
       }}>
 
-        {/* Logo wordmark */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/Mandala%20Network%20Logo2.svg"
-          alt="Mandala Network"
-          style={{ height: "auto", width: "auto", maxHeight: 80, maxWidth: 240, mixBlendMode: "multiply", marginBottom: "3rem" }}
-          onError={e => { e.currentTarget.style.display = "none"; }}
-        />
-
-        {/* Label */}
-        <p className={archivo.className} style={{
-          fontSize: "0.65rem", letterSpacing: "0.35em", textTransform: "uppercase",
-          color: "rgba(38,17,12,0.5)", marginBottom: "1.25rem",
+        {/* Badge */}
+        <div className={archivo.className} style={{
+          display: "inline-flex", alignItems: "center", gap: "0.5rem",
+          background: "rgba(38,17,12,0.88)",
+          borderRadius: "100px",
+          padding: "0.4rem 1rem",
+          marginBottom: "2.5rem",
         }}>
-          Something is coming
-        </p>
+          <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#A8875C", display: "inline-block", flexShrink: 0 }} />
+          <span style={{
+            fontSize: "0.65rem", fontWeight: 600, letterSpacing: "0.2em",
+            textTransform: "uppercase", color: "#E7DFCB",
+          }}>
+            Launching Soon · 2026
+          </span>
+        </div>
 
         {/* Headline */}
-        <h1 style={{
-          fontFamily: "inherit",
-          fontSize: "clamp(3rem, 9vw, 7rem)",
-          fontWeight: 300,
-          fontStyle: "italic",
-          color: "#26110C",
+        <h1 className={cormorant.className} style={{
+          fontSize: "clamp(3.5rem, 8.5vw, 7rem)",
+          fontWeight: 400,
           lineHeight: 1.05,
-          letterSpacing: "-0.02em",
-          marginBottom: "1.5rem",
-          textWrap: "balance",
+          color: "#26110C",
+          marginBottom: 0,
+          maxWidth: "16ch",
         }}>
-          Coming Soon
+          We&apos;re building<br />something
         </h1>
 
+        {/* "intentional." — italic, golden, with inline sub-text */}
+        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "center", gap: "0.6rem", marginBottom: "2.5rem", flexWrap: "wrap" }}>
+          <span className={cormorant.className} style={{
+            fontSize: "clamp(3.5rem, 8.5vw, 7rem)",
+            fontWeight: 400,
+            fontStyle: "italic",
+            color: "#7A5C38",
+            lineHeight: 1.05,
+          }}>
+            intentional.
+          </span>
+          <span className={cormorant.className} style={{
+            fontSize: "clamp(0.75rem, 1.2vw, 1rem)",
+            fontStyle: "italic",
+            color: "#5C3E24",
+            opacity: 0.7,
+            paddingBottom: "0.9rem",
+            whiteSpace: "nowrap",
+          }}>
+            From relationships to real outcomes.
+          </span>
+        </div>
+
+        {/* Body */}
         <p className={archivo.className} style={{
-          fontSize: "1rem",
-          color: "rgba(38,17,12,0.55)",
-          maxWidth: "38ch",
-          lineHeight: 1.7,
-          fontWeight: 300,
-          marginBottom: "3rem",
+          fontSize: "clamp(1rem, 1.5vw, 1.2rem)",
+          fontWeight: 400,
+          color: "#3B2318",
+          maxWidth: "52ch",
+          lineHeight: 1.75,
+          marginBottom: "2.5rem",
+          opacity: 0.85,
         }}>
-          We are building something remarkable. Market access, event experiences, and real outcomes across Europe, MENA &amp; South Asia.
+          Our new home is on the way — market access and event experiences
+          for Web3 &amp; AI across Europe, MENA, and South Asia.
+          In the meantime, the conversation is already open.
         </p>
 
-        {/* Countdown */}
-        <div style={{
-          display: "flex", gap: "clamp(1.5rem, 4vw, 3rem)",
-          marginBottom: "3.5rem",
-        }}>
-          {[
-            { v: d,       l: "Days" },
-            { v: h,       l: "Hours" },
-            { v: m,       l: "Min" },
-            { v: s,       l: "Sec" },
-          ].map(({ v, l }) => (
-            <div key={l} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.35rem" }}>
-              <span style={{
-                fontFamily: "inherit", fontSize: "clamp(2rem, 6vw, 4rem)",
-                fontWeight: 300, color: "#26110C", lineHeight: 1,
-                fontVariantNumeric: "tabular-nums", minWidth: "2ch", textAlign: "center",
-              }}>
-                {pad(v)}
-              </span>
-              <span className={archivo.className} style={{
-                fontSize: "0.6rem", letterSpacing: "0.25em", textTransform: "uppercase",
-                color: "rgba(38,17,12,0.4)",
-              }}>{l}</span>
-            </div>
-          ))}
-        </div>
-
-        {/* Divider ornament */}
-        <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "2.5rem", width: "100%", maxWidth: 320 }}>
-          <div style={{ flex: 1, height: 1, background: "rgba(38,17,12,0.2)" }} />
-          <svg width="20" height="20" viewBox="-10 -10 20 20" aria-hidden="true">
-            <circle r="8" fill="none" stroke="rgba(38,17,12,0.3)" strokeWidth="0.8" />
-            {[0,1,2,3,4,5,6,7].map(i => {
-              const a = (i / 8) * Math.PI * 2;
-              return <line key={i} x1={Math.cos(a)*3} y1={Math.sin(a)*3} x2={Math.cos(a)*8} y2={Math.sin(a)*8} stroke="rgba(38,17,12,0.25)" strokeWidth="0.6" />;
-            })}
-            <circle r="2" fill="rgba(38,17,12,0.4)" />
-          </svg>
-          <div style={{ flex: 1, height: 1, background: "rgba(38,17,12,0.2)" }} />
-        </div>
-
-        {/* Email capture */}
+        {/* Email form */}
         {submitted ? (
           <p className={archivo.className} style={{
-            fontSize: "0.85rem", color: "rgba(38,17,12,0.6)",
-            letterSpacing: "0.05em",
+            fontSize: "0.9rem", color: "#3B2318", opacity: 0.7,
+            marginBottom: "1.5rem",
           }}>
             You&apos;re on the list. We&apos;ll be in touch.
           </p>
         ) : (
           <form
             onSubmit={e => { e.preventDefault(); if (email) setSubmitted(true); }}
-            style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", justifyContent: "center" }}
+            style={{ display: "flex", gap: "0.5rem", marginBottom: "1.5rem", flexWrap: "wrap", justifyContent: "center" }}
           >
             <input
+              ref={inputRef}
               type="email"
               required
               value={email}
               onChange={e => setEmail(e.target.value)}
-              placeholder="your@email.com"
+              placeholder="Your email"
               className={archivo.className}
               style={{
-                padding: "0.75rem 1.1rem",
-                borderRadius: "4px",
-                border: "1px solid rgba(38,17,12,0.25)",
-                background: "rgba(206,195,174,0.4)",
-                backdropFilter: "blur(8px)",
+                padding: "0 1.25rem",
+                height: 48,
+                borderRadius: "6px",
+                border: "1.5px solid rgba(38,17,12,0.18)",
+                background: "rgba(251,248,241,0.6)",
                 color: "#26110C",
-                fontSize: "0.875rem",
-                fontWeight: 300,
+                fontSize: "0.95rem",
+                fontWeight: 400,
                 outline: "none",
-                width: 220,
+                width: 280,
+                backdropFilter: "blur(8px)",
                 transition: "border-color 0.2s",
               }}
-              onFocus={e => (e.currentTarget.style.borderColor = "rgba(38,17,12,0.6)")}
-              onBlur={e => (e.currentTarget.style.borderColor = "rgba(38,17,12,0.25)")}
+              onFocus={e => (e.currentTarget.style.borderColor = "rgba(38,17,12,0.45)")}
+              onBlur={e => (e.currentTarget.style.borderColor = "rgba(38,17,12,0.18)")}
             />
             <button
               type="submit"
               className={archivo.className}
               style={{
-                padding: "0.75rem 1.5rem",
-                borderRadius: "4px",
+                height: 48,
+                padding: "0 1.75rem",
+                borderRadius: "6px",
                 background: "#26110C",
-                color: "#cec3ae",
+                color: "#F5EFE2",
                 border: "none",
-                fontSize: "0.8rem",
-                fontWeight: 500,
-                letterSpacing: "0.08em",
-                textTransform: "uppercase",
+                fontSize: "0.9rem",
+                fontWeight: 600,
                 cursor: "pointer",
+                letterSpacing: "0.02em",
                 transition: "opacity 0.2s",
               }}
-              onMouseEnter={e => (e.currentTarget.style.opacity = "0.8")}
+              onMouseEnter={e => (e.currentTarget.style.opacity = "0.82")}
               onMouseLeave={e => (e.currentTarget.style.opacity = "1")}
             >
-              Notify Me
+              Notify me
             </button>
           </form>
         )}
@@ -386,30 +239,28 @@ export default function ComingSoon() {
           rel="noopener noreferrer"
           className={archivo.className}
           style={{
-            marginTop: "2.5rem",
-            fontSize: "0.72rem",
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            color: "rgba(38,17,12,0.4)",
-            textDecoration: "none",
-            transition: "color 0.2s",
+            display: "inline-flex", alignItems: "center", gap: "0.5rem",
+            fontSize: "0.82rem", fontWeight: 600,
+            color: "#3B2318", textDecoration: "none",
+            opacity: 0.75, transition: "opacity 0.2s",
           }}
-          onMouseEnter={e => (e.currentTarget.style.color = "rgba(38,17,12,0.7)")}
-          onMouseLeave={e => (e.currentTarget.style.color = "rgba(38,17,12,0.4)")}
+          onMouseEnter={e => (e.currentTarget.style.opacity = "1")}
+          onMouseLeave={e => (e.currentTarget.style.opacity = "0.75")}
         >
-          @MandalaNetwork on Telegram
+          <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#A8875C", display: "inline-block", flexShrink: 0 }} />
+          Talk to us on Telegram · @MandalaNetwork
         </a>
-      </div>
+      </main>
 
-      {/* Footer */}
+      {/* Footer dashes */}
       <div style={{
         position: "absolute", bottom: "1.5rem", left: 0, right: 0,
-        display: "flex", justifyContent: "center",
-        opacity: visible ? 0.4 : 0, transition: "opacity 1.5s ease 0.8s",
+        display: "flex", justifyContent: "center", gap: "0.5rem",
+        opacity: visible ? 0.35 : 0,
+        transition: "opacity 1.5s ease 0.6s",
       }}>
-        <span className={archivo.className} style={{ fontSize: "0.65rem", letterSpacing: "0.15em", color: "#26110C" }}>
-          © {new Date().getFullYear()} Mandala Network
-        </span>
+        <div style={{ width: 24, height: 1.5, borderRadius: 1, background: "#26110C" }} />
+        <div style={{ width: 24, height: 1.5, borderRadius: 1, background: "#26110C" }} />
       </div>
     </div>
   );
