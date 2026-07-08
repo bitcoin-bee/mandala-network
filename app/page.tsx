@@ -45,7 +45,7 @@ export default function ComingSoon() {
         <img
           src="/Mandala%20Network%20Logo2.svg"
           alt="Mandala Network"
-          style={{ height: "auto", maxHeight: 160, width: "auto", maxWidth: 380, mixBlendMode: "multiply" }}
+          style={{ height: "auto", maxHeight: 320, width: "auto", maxWidth: 760, mixBlendMode: "multiply" }}
           onError={e => { e.currentTarget.style.display = "none"; }}
         />
       </nav>
