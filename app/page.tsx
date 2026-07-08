@@ -45,7 +45,7 @@ export default function ComingSoon() {
         <img
           src="/Mandala%20Network%20Logo2.svg"
           alt="Mandala Network"
-          style={{ height: "auto", maxHeight: 120, width: "auto", maxWidth: 300, mixBlendMode: "multiply" }}
+          style={{ height: "auto", maxHeight: 160, width: "auto", maxWidth: 380, mixBlendMode: "multiply" }}
           onError={e => { e.currentTarget.style.display = "none"; }}
         />
       </nav>
@@ -127,7 +127,7 @@ export default function ComingSoon() {
           marginBottom: "2.5rem",
           opacity: 0.85,
         }}>
-          Our new home is on the way — market access and event experiences
+          Our new home is on the way - market access and event experiences
           for Web3 &amp; AI across Europe, MENA, and South Asia.
           In the meantime, the conversation is already open.
         </p>
