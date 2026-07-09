@@ -57,7 +57,7 @@ export default function ComingSoon() {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        padding: "6rem 1.5rem 3rem",
+        padding: "10rem 1.5rem 3rem",
         position: "relative", zIndex: 1,
         textAlign: "center",
         opacity: visible ? 1 : 0,
