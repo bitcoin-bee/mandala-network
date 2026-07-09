@@ -37,7 +37,7 @@ export default function ComingSoon() {
       <nav style={{
         position: "absolute", top: 0, left: 0, right: 0,
         display: "flex", alignItems: "center", justifyContent: "space-between",
-        padding: "1.5rem 2rem",
+        padding: "0.5rem 1.25rem",
         opacity: visible ? 1 : 0,
         transition: "opacity 0.8s ease",
       }}>
@@ -45,7 +45,7 @@ export default function ComingSoon() {
         <img
           src="/Mandala%20Network%20Logo2.svg"
           alt="Mandala Network"
-          style={{ height: "auto", maxHeight: 320, width: "auto", maxWidth: 760, mixBlendMode: "multiply" }}
+          style={{ height: "auto", maxHeight: 220, width: "auto", maxWidth: 520, mixBlendMode: "multiply" }}
           onError={e => { e.currentTarget.style.display = "none"; }}
         />
       </nav>
