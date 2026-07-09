@@ -37,7 +37,7 @@ export default function ComingSoon() {
       <nav style={{
         position: "absolute", top: 0, left: 0, right: 0,
         display: "flex", alignItems: "center", justifyContent: "space-between",
-        padding: "0.5rem 1.25rem",
+        padding: "0 0.5rem",
         opacity: visible ? 1 : 0,
         transition: "opacity 0.8s ease",
       }}>
