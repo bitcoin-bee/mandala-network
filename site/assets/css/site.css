@@ -173,24 +173,6 @@ button{font:inherit;color:inherit}
 .nav a:hover{color:var(--lamp)}
 .nav a[data-active]{color:var(--lamp)}
 
-/* Compact page header — used on pages that carry no cover (Event Intelligence) */
-.pagehead{
-  width:100%;
-  display:flex;align-items:center;justify-content:space-between;gap:1.5rem 2rem;flex-wrap:wrap;
-  padding:clamp(1.1rem,2.2vw,1.6rem) clamp(1.5rem,4vw,3rem);
-  background:var(--ground-oxblood);
-  border-bottom:1px solid rgba(242,200,121,0.3);
-}
-.pagehead__mark{display:flex;align-items:center;gap:0.75rem;text-decoration:none}
-.pagehead__mark img{width:36px;height:36px;opacity:0.9}
-.pagehead__wordmark{display:flex;gap:0.45rem;font-family:var(--font-micro);font-size:0.62rem;
-  font-weight:500;letter-spacing:0.3em;text-transform:uppercase;color:var(--champagne)}
-.pagehead__wordmark b{font-weight:700}
-.pagehead__wordmark i{font-style:normal;font-weight:300;color:rgba(234,206,170,0.6)}
-.pagehead .nav{flex:1 1 auto}
-/* the section under the compact header needs less lead-in than it does under a cover */
-.pagehead + .process{padding-top:clamp(3rem,6vw,5rem)}
-
 /* Client logo strip */
 .clients{width:100%;padding:3.2rem 3rem 3.6rem;background:var(--ground-oxblood);display:flex;flex-direction:column;align-items:center;gap:1.6rem}
 .clients__label{font-family:var(--font-micro);font-size:0.6rem;font-weight:500;letter-spacing:0.3em;text-transform:uppercase;color:rgba(234,206,170,0.55)}
@@ -278,7 +260,7 @@ button{font:inherit;color:inherit}
 .cap-subwrap{display:flex;flex-direction:column;gap:0.9rem;margin-top:1.4rem;padding-left:1.2rem;border-left:1px solid rgba(192,138,94,0.45)}
 .cap-subwrap ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:0.5rem;
   font-size:0.95rem;line-height:1.7;color:rgba(245,239,226,0.72)}
-.cap-col h1,.cap-col h2{font-size:var(--t-h3);line-height:1.1;color:var(--bone)}
+.cap-col h2{font-size:var(--t-h3);line-height:1.1;color:var(--bone)}
 .cap-ctas{display:flex;flex-direction:column;align-items:flex-start;gap:0.9rem;margin-top:1.9rem;
   padding-top:1.7rem;border-top:1px solid rgba(245,239,226,0.16)}
 
@@ -498,8 +480,6 @@ a.card:hover{background:rgba(245,239,226,0.11);transform:translateY(-3px)}
 }
 
 @media (max-width:680px){
-  .pagehead{justify-content:center;text-align:center}
-  .pagehead .nav{justify-content:center}
   :root{--shell-pad:1.5rem}
   body{font-size:15px}
   .cover{aspect-ratio:3/4}
