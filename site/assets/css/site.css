@@ -138,8 +138,8 @@ button{font:inherit;color:inherit}
 /* Wordmark — two lines, set open and given room to breathe */
 .cover__wordmark{
   margin:0;
-  display:flex;flex-direction:column;
-  gap:1.1cqw;
+  display:flex;flex-direction:column;align-items:center;
+  gap:0.4cqw;
   font-family:var(--font-wordmark);
   font-weight:500;
   color:#F7F2E8;
@@ -148,10 +148,10 @@ button{font:inherit;color:inherit}
 .cover__word{
   display:block;
   font-size:12.4cqw;
-  line-height:0.92;
+  line-height:0.88;
   letter-spacing:0.055em;
   text-transform:uppercase;
-  text-indent:0.055em; /* optical: cancels the trailing tracking space */
+  text-indent:0.0275em; /* optical: half the tracking, to centre the ink not the box */
 }
 
 /* Foot — rule, then the positioning line, then the call to action */
@@ -484,8 +484,8 @@ a.card:hover{background:rgba(245,239,226,0.11);transform:translateY(-3px)}
   body{font-size:15px}
   .cover{aspect-ratio:3/4}
   .cover__frame{padding:5cqw 5cqw 6cqw}
-  .cover__wordmark{gap:2cqw;padding-top:4cqw}
-  .cover__word{font-size:15.5cqw;letter-spacing:0.04em;text-indent:0.04em}
+  .cover__wordmark{gap:0.5cqw;padding-top:4cqw}
+  .cover__word{font-size:15.5cqw;letter-spacing:0.04em;text-indent:0.02em}
   .cover__foot{gap:3.4cqw}
   .cover__tag{font-size:2.35cqw;letter-spacing:0.2em}
   .nav{gap:0.85rem 1.1rem;font-size:0.55rem;letter-spacing:0.18em;justify-content:flex-start}
