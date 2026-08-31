@@ -135,6 +135,14 @@ button{font:inherit;color:inherit}
   linear-gradient(to bottom,rgba(90,36,19,0.26),rgba(90,36,19,0.2))}
 .cover__frame{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:2.8cqw 3cqw 3.2cqw;z-index:3}
 
+/* Mandala wheel — sits top-left of the cover and leads home */
+.cover__top{display:flex;align-items:center;justify-content:space-between;gap:1.5rem}
+.cover__mark{display:inline-flex;flex:0 0 auto;line-height:0;text-decoration:none;border-radius:50%}
+.cover__mark img{width:4.4cqw;min-width:34px;max-width:66px;height:auto;opacity:0.82;
+  transition:opacity .3s ease,transform .6s cubic-bezier(.22,1,.36,1)}
+.cover__mark:hover img{opacity:1;transform:rotate(60deg)}
+.cover__mark:focus-visible{outline:2px solid var(--lamp);outline-offset:6px}
+
 /* Wordmark — two lines, set open and given room to breathe */
 .cover__wordmark{
   margin:0;
@@ -525,4 +533,5 @@ a.card:hover{background:rgba(245,239,226,0.11);transform:translateY(-3px)}
   *,*::before,*::after{animation-duration:0.001ms!important;animation-iteration-count:1!important;transition-duration:0.001ms!important}
   html{scroll-behavior:auto}
   .reveal{opacity:1;transform:none}
+  .cover__mark:hover img{transform:none}
 }
