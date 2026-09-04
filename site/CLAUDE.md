@@ -14,6 +14,9 @@ optimised images. Vercel serves the files exactly as they are.
 index.html                 home page
 event-intelligence.html    /event-intelligence
 vercel.json                routing, caching, security headers - REQUIRED
+favicon.ico                root icon, 16/32/48/64. Crawlers request /favicon.ico directly and
+                           ignore the <link> tag, so this must stay at the ROOT, not in assets/
+apple-touch-icon.png       180x180 on an opaque ground, since iOS ignores transparency
 robots.txt                 crawler rules, incl. explicit allow for AI answer engines
 sitemap.xml                two URLs
 assets/css/fonts.css       @font-face declarations (self-hosted)
@@ -23,7 +26,7 @@ assets/js/site.js          FAQ accordion, events switcher, process hover, scroll
 assets/fonts/*.woff2       Newsreader · Source Serif 4 · Archivo · Playfair Display
 assets/img/*.webp          all imagery
 assets/img/logo-mark-light.webp    logo, strapline masked off - cover and EI header
-assets/img/logo-lockup-warm.webp   full logo, warm colourway - the Let's talk block
+assets/img/logo-lockup-warm.webp   full logo, warm colourway - spare since 4 Sep 2026
 assets/img/logo-lockup-*.webp      full logo, neutral colourways - spare
 assets/img/mandala-mark*.webp      the mandala monogram alone
 ```
@@ -168,9 +171,12 @@ search and replace across `index.html`, `event-intelligence.html` and `sitemap.x
 - **Both pages share `site.css` and `site.js`.** A change to either affects both. Check both.
 - **Section order** is Cover, Clients, Thesis, Capabilities, Case study, Events, Report, FAQ,
   Contact. This order was set by the owner after trying it both ways. Do not reorder.
-- **The Let's talk block opens with the logo, not a heading.** `h2.contact__mark` wraps the warm
-  lockup; the footer carries "Mandala Network" as small Archivo caps instead. That swap was
-  deliberate.
+- **The Let's talk block opens with the logo, not a heading.** `h2.contact__mark` wraps the
+  logo; the footer carries "Mandala Network" as small Archivo caps instead. That swap was
+  deliberate. On 4 September 2026 the owner asked for it smaller and cleaner, so it moved from
+  `logo-lockup-warm.webp` at 440px to `logo-mark-light.webp` at 250px. The strapline is under
+  13px tall below about 300px wide and turns to mush, which is why the strapline-free mark is
+  used here rather than simply scaling the warm one down.
 - **The cover photo is graded in CSS**, not baked in: a warm hue shift on `.cover__img` plus a
   radial vignette in `.cover__veil`. It pulls the carpet out of magenta and into the palette.
   Don't flatten it back to a plain dark overlay.
@@ -183,9 +189,9 @@ search and replace across `index.html`, `event-intelligence.html` and `sitemap.x
 
 - **The Formspree endpoint does not exist yet.** The capture block is commented out until it does
   (see above).
-- **`from relationships to real outcomes` appears twice at the bottom** of the home page: once
-  inside the contact logo, once in the footer base bar. The owner has been asked whether to drop
-  it from the bar. Leave both until she answers.
+- ~~`from relationships to real outcomes` appeared twice at the bottom of the home page.~~
+  RESOLVED 4 September 2026: the Let's talk block now uses the strapline-free mark, so the line
+  survives only in the footer base bar.
 - Article card 3 in the Community Magazine section carries a different X post URL but the same
   headline as card 1. One headline is wrong - the owner needs to supply the correct one.
 - The cover photo original is 653px wide, which is soft on large screens. A higher-resolution

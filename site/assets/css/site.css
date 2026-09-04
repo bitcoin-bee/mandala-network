@@ -496,7 +496,7 @@ a.card:hover{background:rgba(245,239,226,0.11);transform:translateY(-3px)}
 .contact__grid > div{display:flex;flex-direction:column;gap:1.6rem}
 .contact h2{font-size:var(--t-display);line-height:1.02;letter-spacing:-0.01em;color:var(--champagne)}
 .contact__mark{margin:0 0 1.1rem;display:block}
-.contact__mark img{width:min(330px,68%);height:auto}
+.contact__mark img{width:min(250px,60%);height:auto}
 .contact__claim{font-size:var(--t-lead);line-height:1.72;color:rgba(234,206,170,0.82);font-weight:600;max-width:42ch}
 .contact__body{font-size:var(--t-lead);line-height:1.72;color:rgba(234,206,170,0.66);max-width:50ch}
 .contact__link{display:flex;align-items:baseline;justify-content:space-between;gap:2rem;padding:0.2rem 0 1.5rem;
