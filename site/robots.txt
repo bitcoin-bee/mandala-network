@@ -1,7 +1,7 @@
 User-agent: *
 Allow: /
 
-# AI answer engines and research crawlers — explicitly welcomed.
+# AI answer engines and research crawlers - explicitly welcomed.
 User-agent: GPTBot
 Allow: /
 User-agent: OAI-SearchBot

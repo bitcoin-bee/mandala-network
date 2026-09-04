@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Mandala Network — deploy to production.
+# Mandala Network - deploy to production.
 # Usage:  ./deploy.sh
 # Static site. No build step. Every run redeploys this folder to the linked Vercel project.
 
@@ -11,14 +11,24 @@ ok()   { printf '\033[32m✓ %s\033[0m\n' "$1"; }
 
 echo "Pre-flight"
 
-[ -f index.html ]              || fail "index.html missing — are you in the right folder?"
+[ -f index.html ]              || fail "index.html missing - are you in the right folder?"
 [ -f event-intelligence.html ] || fail "event-intelligence.html missing"
-[ -f vercel.json ]             || fail "vercel.json missing — /event-intelligence will 404 without it"
+[ -f vercel.json ]             || fail "vercel.json missing - /event-intelligence will 404 without it"
 [ -d assets/img ]              || fail "assets/img missing"
 [ -d assets/fonts ]            || fail "assets/fonts missing"
 
-grep -q '"cleanUrls": true' vercel.json || fail 'vercel.json lost "cleanUrls": true — /event-intelligence would 404'
+grep -q '"cleanUrls": true' vercel.json || fail 'vercel.json lost "cleanUrls": true - /event-intelligence would 404'
 ok "structure"
+
+# Only trips on a LIVE form. The block is currently commented out, which is fine.
+if perl -0pe 's/<!--.*?-->//gs' index.html | grep -q 'FORMSPREE_ID'; then
+  fail 'the report email form is live but still points at the FORMSPREE_ID placeholder - paste the real formspree.io endpoint into index.html first'
+fi
+if grep -q 'FORMSPREE_ID' index.html; then
+  printf '\033[33m!\033[0m %s\n' "email capture is commented out (no Formspree endpoint yet) - everything else deploys"
+else
+  ok "email form wired"
+fi
 
 fonts=$(ls assets/fonts/*.woff2 2>/dev/null | wc -l | tr -d ' ')
 [ "$fonts" -ge 8 ] || fail "expected 8 font files, found $fonts"
@@ -35,7 +45,7 @@ for f in index.html event-intelligence.html; do
     [ -f ".$ref" ] || { printf '\033[31m  missing: %s (in %s)\033[0m\n' "$ref" "$f"; missing=1; }
   done < <(grep -o '/assets/[A-Za-z0-9._/-]*' "$f" | sort -u)
 done
-[ "$missing" -eq 0 ] || fail "broken asset references — fix before deploying"
+[ "$missing" -eq 0 ] || fail "broken asset references - fix before deploying"
 ok "asset references resolve"
 
 echo

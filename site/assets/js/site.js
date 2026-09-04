@@ -1,4 +1,4 @@
-/* Mandala Network — interaction layer.
+/* Mandala Network - interaction layer.
    Replaces the design-canvas React runtime with ~70 lines of vanilla JS.
    Everything degrades gracefully: with JS off, the page is fully readable. */
 (function () {
@@ -74,24 +74,55 @@
     });
   }
 
-  /* --- 4. FAQ accordion -------------------------------------------------- */
+  /* --- 4. FAQ accordion --------------------------------------------------
+     Items open and close independently, so the two that start open can stay
+     open while a third is read. */
   var faq = document.getElementById('faqList');
   if (faq) {
     faq.querySelectorAll('.faq__q').forEach(function (btn) {
       btn.addEventListener('click', function () {
         var panel = document.getElementById(btn.getAttribute('aria-controls'));
-        var isOpen = panel.hasAttribute('data-on');
-        faq.querySelectorAll('.faq__a').forEach(function (p) { p.removeAttribute('data-on'); });
-        faq.querySelectorAll('.faq__q').forEach(function (b) {
-          b.setAttribute('aria-expanded', 'false');
-          b.querySelector('.faq__sign').textContent = '+';
-        });
-        if (!isOpen) {
-          panel.setAttribute('data-on', '');
-          btn.setAttribute('aria-expanded', 'true');
-          btn.querySelector('.faq__sign').textContent = '−';
-        }
+        var willOpen = !panel.hasAttribute('data-on');
+        panel.toggleAttribute('data-on', willOpen);
+        btn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+        btn.querySelector('.faq__sign').textContent = willOpen ? '−' : '+';
       });
+    });
+  }
+
+  /* --- 5. The adoption line draws itself on first scroll ------------------ */
+  var chart = document.querySelector('.case__chart');
+  if (chart) {
+    var draw = function () { chart.setAttribute('data-drawn', ''); };
+    if (!('IntersectionObserver' in window)) {
+      draw();
+    } else {
+      var cio = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { draw(); cio.disconnect(); }
+        });
+      }, { threshold: 0.35 });
+      cio.observe(chart);
+      setTimeout(draw, 6000); /* fails open - the chart is never left blank */
+    }
+  }
+
+  /* --- 6. Days until Devcon Mumbai ---------------------------------------- */
+  var counters = document.querySelectorAll('[data-countdown]');
+  if (counters.length) {
+    var target = Date.UTC(2026, 10, 3); /* 3 November 2026 - Devcon 8, Mumbai */
+    var now = new Date();
+    var start = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+    var days = Math.round((target - start) / 86400000);
+    counters.forEach(function (cd) {
+      var num = cd.querySelector('[data-count]');
+      var lab = cd.querySelector('[data-count-label]');
+      if (!num || !lab) { return; }
+      if (days > 1) { num.textContent = days; lab.textContent = 'days until Devcon Mumbai'; }
+      else if (days === 1) { num.textContent = '1'; lab.textContent = 'day until Devcon Mumbai'; }
+      else if (days === 0) { num.textContent = '0'; lab.textContent = 'Devcon Mumbai opens today'; }
+      else { cd.remove(); return; }
+      cd.removeAttribute('hidden');
     });
   }
 })();

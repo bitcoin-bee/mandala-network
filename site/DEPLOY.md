@@ -1,4 +1,4 @@
-# Mandala Network — deployment instructions
+# Mandala Network - deployment instructions
 
 **For Claude Code (or any engineer). Follow exactly. Do not restructure the project.**
 
@@ -12,7 +12,7 @@ no server-side code. Vercel serves these files as-is. Anything that looks like a
 ```
 index.html                     the home page
 event-intelligence.html        the Event Intelligence page (/event-intelligence)
-vercel.json                    routing, caching and security headers — REQUIRED, do not delete
+vercel.json                    routing, caching and security headers - REQUIRED, do not delete
 robots.txt                     crawler rules, incl. explicit allow for AI answer engines
 sitemap.xml                    two URLs
 DEPLOY.md                      this file (safe to leave in place, or delete before deploying)
@@ -31,13 +31,13 @@ Total: ~1.8 MB on disk, ~410 KB on first page load.
 ## 2. Deploy
 
 > ### ⚠️ Read this before running anything
-> There is already a Vercel project called **`mandala-network`** — a Next.js 15 app (App Router,
+> There is already a Vercel project called **`mandala-network`** - a Next.js 15 app (App Router,
 > Tailwind 4), with a local repo at `~/Documents/GitHub/mandala-network`.
 > **Do not deploy this static site into that project.** Its build settings expect Next.js, and
 > linking here would either fail the build or overwrite a live deployment.
 >
 > Choose one, deliberately:
-> - **Recommended:** deploy this as a **new** Vercel project — e.g. `mandala-network-site` — get a
+> - **Recommended:** deploy this as a **new** Vercel project - e.g. `mandala-network-site` - get a
 >   preview URL, check it, and only then move the `mandalanetwork.xyz` domain across from the old
 >   project. Zero-downtime, fully reversible.
 > - **Or**, if the Next.js app is being retired: retire it explicitly first (rename or delete the
@@ -78,7 +78,7 @@ After the first successful deploy:
 
 1. Vercel dashboard → the project → **Settings → Domains**
 2. Add `mandalanetwork.xyz` **and** `www.mandalanetwork.xyz`
-3. Set `www` to redirect to the apex (or the reverse — but pick one and keep it, because
+3. Set `www` to redirect to the apex (or the reverse - but pick one and keep it, because
    every canonical URL in the HTML points at `https://mandalanetwork.xyz/` with no `www`)
 4. Add the DNS records Vercel shows you at the registrar. Propagation is usually minutes.
 
@@ -94,7 +94,7 @@ Run through this on the live URL before telling anyone the site is up.
 
 - [ ] Homepage loads, cover image sharp, wordmark set in Playfair Display
 - [ ] Headings render in Newsreader, body copy in Source Serif 4, small caps in Archivo
-      (if any of these fall back to a system serif, a `.woff2` failed to upload — check `/assets/fonts/`)
+      (if any of these fall back to a system serif, a `.woff2` failed to upload - check `/assets/fonts/`)
 - [ ] `https://mandalanetwork.xyz/event-intelligence` resolves **without** `.html` in the URL
       (this depends on `"cleanUrls": true` in `vercel.json`)
 - [ ] On that page, the three event tabs (Token2049 / Devcon Mumbai / EthCC) switch panel,
@@ -109,7 +109,7 @@ Then submit the sitemap in Google Search Console and Bing Webmaster Tools.
 
 ---
 
-## 5. Link inventory — verify each one on the live site
+## 5. Link inventory - verify each one on the live site
 
 **Header**
 
@@ -147,7 +147,7 @@ Then submit the sitemap in Google Search Console and Bing Webmaster Tools.
 | Host a side event at DevCon 8 Mumbai 2026 | `https://form.typeform.com/to/qvrQfqQo` |
 | Talk to us on Telegram (Token2049 and EthCC panels) | `https://t.me/MandalaNetwork` |
 | Tell us about your event (Devcon Mumbai panel) | `https://form.typeform.com/to/qvrQfqQo` |
-| Cover nav — About / Capabilities / Case Studies | `/#about`, `/#capabilities`, `/#case-studies` |
+| Cover nav - About / Capabilities / Case Studies | `/#about`, `/#capabilities`, `/#case-studies` |
 | Footer Events (all four) | `#upcoming-events` (same page) |
 
 **Contact block**
@@ -193,7 +193,7 @@ sections of its own: the Event intelligence capabilities card and the Upcoming E
 ## 7. Things not to do
 
 - Do not add a build step, a framework, or a bundler.
-- Do not move `assets/` or rename anything inside it — every path in the HTML and CSS is absolute
+- Do not move `assets/` or rename anything inside it - every path in the HTML and CSS is absolute
   (`/assets/...`) and will break.
 - Do not delete `vercel.json`; without `"cleanUrls": true` the Event Intelligence links 404.
 - Do not re-point font loading at Google Fonts. The fonts are deliberately self-hosted: faster
