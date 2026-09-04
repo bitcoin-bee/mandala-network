@@ -172,9 +172,9 @@ button{font:inherit;color:inherit}
 .clients{width:100%;padding:3.2rem 0 3.6rem;background:var(--ground-oxblood)}
 .clients__inner{display:flex;flex-direction:column;align-items:flex-start;gap:1.6rem}
 .clients__label{font-family:var(--font-micro);font-size:0.6rem;font-weight:500;letter-spacing:0.3em;text-transform:uppercase;color:rgba(234,206,170,0.55)}
-.clients__grid{display:grid;grid-template-columns:repeat(6,1fr);gap:1.4rem 2.4rem;align-items:center;width:100%}
-.clients__cell{display:flex;align-items:center;justify-content:flex-start;height:3.4rem}
-.clients__cell img{width:auto;height:2.3rem;max-width:100%;object-fit:contain;filter:brightness(0) invert(1);opacity:0.92;transition:opacity var(--dur-hover) ease}
+.clients__grid{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.4rem 2.4rem;width:100%}
+.clients__cell{display:flex;align-items:center;justify-content:center;height:3.4rem;flex:0 0 auto}
+.clients__cell img{width:auto;height:auto;max-height:2.3rem;max-width:6.75rem;object-fit:contain;filter:brightness(0) invert(1);opacity:0.92;transition:opacity var(--dur-hover) ease}
 .clients__cell img:hover{opacity:1}
 
 /* --- 6. About / markets -------------------------------------------------- */
@@ -290,20 +290,20 @@ button{font:inherit;color:inherit}
 .cap-ctas{display:flex;flex-direction:column;align-items:flex-start;gap:0.9rem;margin-top:1.9rem;
   padding-top:1.7rem;border-top:1px solid rgba(245,239,226,0.16)}
 
-.process__title{text-align:left;margin:7rem auto 0;font-size:var(--t-h2);letter-spacing:-0.01em;line-height:1;color:var(--copper)}
-.steps{display:flex;align-items:stretch;justify-content:flex-start;gap:0;margin-top:4.5rem}
-.step{flex:1;display:flex;flex-direction:column;align-items:flex-start;gap:1.4rem;padding:0 1.5rem 0 0;
+.process__title{text-align:center;margin:7rem auto 0;font-size:var(--t-h2);letter-spacing:-0.01em;line-height:1;color:var(--copper)}
+.steps{display:flex;align-items:stretch;justify-content:center;gap:0;margin-top:4.5rem}
+.step{flex:1;display:flex;flex-direction:column;align-items:center;gap:1.4rem;padding:0 1.5rem;
   transition:opacity 0.5s ease,transform 0.5s ease}
 .steps[data-lifted] .step{opacity:0.3}
 .steps[data-lifted] .step[data-on]{opacity:1;transform:translateY(-10px)}
-.step__img{width:62%;aspect-ratio:3/2;display:flex;align-items:center;justify-content:flex-start;overflow:hidden}
+.step__img{width:62%;aspect-ratio:3/2;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .step__img img{width:100%;height:100%;object-fit:contain;filter:invert(1) sepia(0.42) saturate(1.5) hue-rotate(-12deg) brightness(0.96) contrast(1.08);opacity:0.9}
 .step__num{font-family:var(--font-micro);font-size:0.64rem;letter-spacing:0.3em;color:var(--copper)}
-.step h3{font-size:var(--t-h4);line-height:1.24;color:#F5EFE2;text-align:left;min-height:1.5em;display:flex;align-items:center}
-.step p,.step ul{font-size:1.02rem;line-height:1.64;color:rgba(245,239,226,0.82);text-align:left;max-width:30ch}
+.step h3{font-size:var(--t-h4);line-height:1.24;color:#F5EFE2;text-align:center;min-height:1.5em;display:flex;align-items:center}
+.step p,.step ul{font-size:1.02rem;line-height:1.64;color:rgba(245,239,226,0.82);text-align:center;max-width:30ch;margin-inline:auto}
 .step ul{list-style:none;margin:0.4rem 0 0;padding:0}
 .step__arrow{width:3.5rem;display:flex;justify-content:center;padding-top:2.2rem;font-size:1.1rem;color:rgba(245,239,226,0.42)}
-.dots{display:flex;justify-content:flex-start;align-items:center;gap:1.4rem;margin-top:3.4rem}
+.dots{display:flex;justify-content:center;align-items:center;gap:1.4rem;margin-top:3.4rem}
 .dots button{appearance:none;border:0;background:none;padding:0.6rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .dots span{display:block;width:6px;height:6px;border-radius:50%;background:rgba(245,239,226,0.32);
   transition:background 0.4s ease,box-shadow 0.4s ease,transform 0.4s ease}
@@ -554,7 +554,7 @@ a.card:hover{background:rgba(245,239,226,0.11);transform:translateY(-3px)}
   .cap-pair{grid-template-columns:minmax(0,1fr);gap:1.25rem}
   .cap-box h4{min-height:0}
   .market__list{grid-template-columns:minmax(0,1fr)}
-  .steps{flex-direction:column;gap:3rem;align-items:flex-start}
+  .steps{flex-direction:column;gap:3rem;align-items:center}
   .step{max-width:32ch}
   .step h3{min-height:0}
   .step__arrow{width:auto;padding:0;transform:rotate(90deg)}
@@ -577,8 +577,9 @@ a.card:hover{background:rgba(245,239,226,0.11);transform:translateY(-3px)}
   .cover__action{align-items:stretch}
   .btn{text-align:center;white-space:normal;font-size:0.6rem;padding:0.95rem 1.1rem}
   .clients{padding:2.5rem 1.5rem}
-  .clients__grid{grid-template-columns:repeat(3,1fr);gap:1.25rem}
-  .clients__cell img{height:1.9rem}
+  .clients__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;justify-content:initial}
+  .clients__cell img{max-height:1.9rem;max-width:5.5rem}
+  .clients__cell,.clients__cell:first-child,.clients__cell:last-child{justify-content:center}
   .about{padding:3.5rem 0 4.5rem}
   .about__inner{gap:2.25rem}
   .about__head{max-width:none;font-size:1.78rem;letter-spacing:0;line-height:1.16}

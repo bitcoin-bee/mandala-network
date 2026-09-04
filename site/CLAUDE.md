@@ -47,9 +47,11 @@ assets/img/mandala-mark*.webp      the mandala monogram alone
    gone wrong twice. To drop the strapline, mask its alpha (rows ~130-162, x >= 208 in the
    803x201 source) and then trim to the ink bounding box. `logo-mark-light.webp` is already
    correct - reuse it rather than regenerating.
-8. **Every section shares one left edge.** The owner asked for this explicitly. Nothing is
-   centred: not The Process, not the client strip, not the events card. If you add a section, it
-   starts at the `.shell` rail like everything else.
+8. **Sections share one left edge, with one deliberate exception.** The owner asked for this
+   explicitly. The exception is **The Process**, which the owner asked to centre on 4 September
+   2026: its title, all three steps (illustration, number, heading and copy) and the dots are
+   centred. Everything else stays left: the client strip, the events card, every other section.
+   If you add a section, it starts at the `.shell` rail like everything else.
 9. **No em dashes anywhere.** The owner asked for this. Use a colon, a comma, or a full stop.
 
 ## Type system
