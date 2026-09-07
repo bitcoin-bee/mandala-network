@@ -573,9 +573,10 @@ a.card:hover{background:rgba(245,239,226,0.11);transform:translateY(-3px)}
   .lockup__logo{width:58cqw;min-width:0}
   .cover__foot{gap:4cqw}
   .cover__slogan{font-size:10.4cqw;max-width:none}
-  .nav{gap:0.85rem 1.1rem;font-size:0.55rem;letter-spacing:0.18em;justify-content:flex-start}
+  .nav{gap:0.4rem 1.35rem;font-size:0.7rem;letter-spacing:0.14em;justify-content:flex-start;align-items:center}
+  .nav a{display:inline-flex;align-items:center;min-height:38px}
   .cover__action{align-items:stretch}
-  .btn{text-align:center;white-space:normal;font-size:0.6rem;padding:0.95rem 1.1rem}
+  .btn{text-align:center;white-space:normal;font-size:0.7rem;padding:1rem 1.1rem}
   .clients{padding:2.5rem 1.5rem}
   .clients__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;justify-content:initial}
   .clients__cell img{max-height:1.9rem;max-width:5.5rem}
@@ -603,7 +604,24 @@ a.card:hover{background:rgba(245,239,226,0.11);transform:translateY(-3px)}
   .foot__grid{grid-template-columns:1fr;gap:2.5rem;padding:3rem 0}
   .foot__base{gap:0.6rem;flex-direction:column;font-size:0.58rem}
   .evt-ctas{align-items:flex-start}
-  .link-cta{white-space:normal}
+  .link-cta{white-space:normal;display:inline-flex;align-items:center;min-height:40px}
+  /* The chart SVG scales with its 760-unit viewBox, so a font-size of 17
+     renders at about 7.6px on a phone. Scaled so the axis stays readable. */
+  /* 26 clipped: the y labels anchor 'end' at x=24 and the last year sits at
+     x=740 in a 760-unit box, so both ran outside it. 20 plus overflow
+     visible keeps them readable and lets the overhang paint. */
+  .case__chart{overflow:visible}
+  .case__chart text{font-size:20px}
+  .case__cap{font-size:0.68rem}
+  .case__src{font-size:0.62rem;line-height:1.5}
+  /* the events card sets small type over a photograph, so it pays a
+     contrast penalty the other sections do not */
+  .sub-list__head,.sub-item,.sub-link,.evt__when{font-size:0.68rem}
+  /* space-between stranded the Luma link top-right once its item wrapped */
+  .sub-row{flex-direction:column;align-items:flex-start;gap:0.3rem}
+  .sub-link{align-self:flex-start}
+  /* small type over a photograph needs more help on a phone */
+  .events__scrim{background:linear-gradient(90deg,rgba(21,12,12,0.96) 0%,rgba(21,12,12,0.93) 55%,rgba(21,12,12,0.9) 100%)}
 }
 
 @media (prefers-reduced-motion:reduce){
