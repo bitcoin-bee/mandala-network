@@ -577,31 +577,39 @@ a.card:hover{background:rgba(245,239,226,0.11);transform:translateY(-3px)}
   .nav a{display:inline-flex;align-items:center;min-height:38px}
   .cover__action{align-items:stretch}
   .btn{text-align:center;white-space:normal;font-size:0.7rem;padding:1rem 1.1rem}
-  .clients{padding:2.5rem 1.5rem}
+  .clients{padding:1.75rem 1.5rem}
   .clients__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;justify-content:initial}
   .clients__cell img{max-height:1.9rem;max-width:5.5rem}
   .clients__cell,.clients__cell:first-child,.clients__cell:last-child{justify-content:center}
-  .about{padding:3.5rem 0 4.5rem}
-  .about__inner{gap:2.25rem}
+  .about{padding:2.5rem 0 3rem}
+  .about__inner{gap:1.75rem}
   .about__head{max-width:none;font-size:1.78rem;letter-spacing:0;line-height:1.16}
   .about__header{gap:0.9rem}
   .about__mark{width:36px;height:36px}
   .about__foot{gap:1.4rem}
   .about__foot p{max-width:none}
-  .cap-card{padding:2rem 1.5rem}
-  .upcoming{padding:4rem 0;min-height:0}
+  .cap-card{padding:1.6rem 1.25rem;gap:1.75rem}
+  .cap-pair{gap:1.25rem}
+  .steps{gap:2rem}
+  .process{padding:2.75rem 0 3rem}
+  .process__title{margin-top:2.75rem}
+  /* the report cover is a 1000x1333 portrait: at full column width it ate
+     456px of scroll on its own */
+  .mag-cover img{max-height:290px;object-fit:cover;object-position:top}
+  .upcoming{padding:2.75rem 0;min-height:0}
   .upcoming__head{gap:1.25rem}
   .ue{padding:1.3rem 0;gap:1rem}
   .ue-panel p{max-width:none}
-  .case{padding:4rem 0}
+  .case{padding:2.75rem 0}
   .events__body{padding:1.8rem 1.4rem}
-  .magazine{padding:4rem 0 4.5rem}
-  .roll-rail{padding-bottom:3rem}
+  .magazine{padding:2.75rem 0 3rem}
+  .roll-rail{padding-bottom:2rem}
   .card{grid-template-columns:6rem 1fr;gap:1rem}
-  .faq{padding:4.5rem 0}
-  .contact{padding-top:4.5rem}
+  .faq{padding:3rem 0}
+  .contact{padding-top:3rem}
   .contact__grid{padding-bottom:4rem}
-  .foot__grid{grid-template-columns:1fr;gap:2.5rem;padding:3rem 0}
+  .foot__grid{grid-template-columns:1fr 1fr;gap:2rem 1.25rem;padding:2.25rem 0}
+  .foot__brand{grid-column:1 / -1}
   .foot__base{gap:0.6rem;flex-direction:column;font-size:0.58rem}
   .evt-ctas{align-items:flex-start}
   .link-cta{white-space:normal;display:inline-flex;align-items:center;min-height:40px}
