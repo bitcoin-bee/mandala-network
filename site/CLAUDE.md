@@ -193,6 +193,17 @@ search and replace across `index.html`, `event-intelligence.html` and `sitemap.x
   full URL: a bare `/x\.com/` would also match `mailbox.com`. Patterns are anchored with
   `(^|\.)host$` so only the host or a subdomain counts. Internal and in-page links fire nothing,
   deliberately, so the monthly event budget is not spent on navigation.
+- **Event names are a deliberate taxonomy, do not rename them casually.** Vercel lists events
+  alphabetically, so the prefixes are what make the dashboard group itself and read as a funnel:
+  `Lead:` are the four actions worth money (Typeform, Book a call, Email, Telegram), `Link:` are
+  everything else outbound, `Read:` is engagement. Renaming splits the history in two, because
+  Vercel keys events by name.
+- **`Read: reached the end`** (section 8) fires once per page load when `#contact` enters the
+  viewport, giving a three-stage funnel: visit, read to the end, click out. One milestone only,
+  not a scroll-depth ladder, because every extra event spends the monthly allowance. Note the
+  threshold is a fraction of the ELEMENT, not the viewport: `#contact` is 972px against a 900px
+  viewport, so 0.3 is reachable, but raise the threshold or grow that section and it silently
+  stops firing.
 
 ## Known open items
 

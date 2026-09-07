@@ -141,13 +141,13 @@
      also match mailbox.com. Anchored so only the real host, or a subdomain
      of it, counts. */
   var OUTBOUND = [
-    [/(^|\.)typeform\.com$/i,        'Typeform: Devcon enquiry'],
-    [/(^|\.)calendar\.app\.google$/i, 'Calendar: intro call'],
-    [/(^|\.)t\.me$/i,                 'Telegram'],
-    [/(^|\.)luma\.com$/i,             'Luma: event page'],
-    [/(^|\.)linkedin\.com$/i,         'LinkedIn'],
-    [/(^|\.)x\.com$/i,                'X'],
-    [/(^|\.)lemurlabs\.net$/i,        'Lemur Labs']
+    [/(^|\.)typeform\.com$/i,        'Lead: Typeform'],
+    [/(^|\.)calendar\.app\.google$/i, 'Lead: Book a call'],
+    [/(^|\.)t\.me$/i,                 'Lead: Telegram'],
+    [/(^|\.)luma\.com$/i,             'Link: Luma'],
+    [/(^|\.)linkedin\.com$/i,         'Link: LinkedIn'],
+    [/(^|\.)x\.com$/i,                'Link: X'],
+    [/(^|\.)lemurlabs\.net$/i,        'Link: Lemur Labs']
   ];
 
   document.addEventListener('click', function (e) {
@@ -157,11 +157,11 @@
                  (/^https?:$/.test(a.protocol) && a.hostname !== window.location.hostname);
     if (!leaves) { return; }
 
-    var name = 'Outbound: other';
+    var name = 'Link: other';
     if (a.protocol === 'mailto:') {
-      name = 'Email: direct enquiry';
+      name = 'Lead: Email';
     } else if (a.protocol === 'tel:') {
-      name = 'Phone';
+      name = 'Lead: Phone';
     } else {
       for (var i = 0; i < OUTBOUND.length; i++) {
         if (OUTBOUND[i][0].test(a.hostname)) { name = OUTBOUND[i][1]; break; }
@@ -175,5 +175,29 @@
       }
     });
   }, true);
+
+  /* --- 8. Did they actually read it? -------------------------------------
+     One event, once per page load, when the contact block comes into view.
+     That turns a flat pageview count into a three-stage funnel:
+     visit -> read to the end -> click out. Deliberately ONE milestone and
+     not a scroll-depth ladder: every extra event spends the monthly
+     allowance, and the bottom of the page is the only depth that means
+     anything here. */
+  var endBlock = document.getElementById('contact');
+  if (endBlock && 'IntersectionObserver' in window) {
+    var counted = false;
+    var reached = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting || counted) { return; }
+        counted = true;
+        reached.disconnect();
+        window.va('event', {
+          name: 'Read: reached the end',
+          data: { from: window.location.pathname }
+        });
+      });
+    }, { threshold: 0.3 });
+    reached.observe(endBlock);
+  }
 
 })();
