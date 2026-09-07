@@ -125,4 +125,55 @@
       cd.removeAttribute('hidden');
     });
   }
+
+  /* --- 7. Outbound clicks, reported to Vercel Web Analytics --------------
+     __vercel_outbound. Every conversion on this site happens by LEAVING it:
+     Typeform, the calendar, Telegram, email. Pageviews alone would show none
+     of them. The shim queues into window.vaq if the insights script has not
+     loaded yet, and the whole block stays silent if analytics is blocked or
+     switched off. Outbound only, deliberately: internal nav clicks would eat
+     the monthly event budget without telling us anything. */
+  window.va = window.va || function () {
+    (window.vaq = window.vaq || []).push(arguments);
+  };
+
+  /* Matched against the HOSTNAME, not the full URL: a bare /x\.com/ would
+     also match mailbox.com. Anchored so only the real host, or a subdomain
+     of it, counts. */
+  var OUTBOUND = [
+    [/(^|\.)typeform\.com$/i,        'Typeform: Devcon enquiry'],
+    [/(^|\.)calendar\.app\.google$/i, 'Calendar: intro call'],
+    [/(^|\.)t\.me$/i,                 'Telegram'],
+    [/(^|\.)luma\.com$/i,             'Luma: event page'],
+    [/(^|\.)linkedin\.com$/i,         'LinkedIn'],
+    [/(^|\.)x\.com$/i,                'X'],
+    [/(^|\.)lemurlabs\.net$/i,        'Lemur Labs']
+  ];
+
+  document.addEventListener('click', function (e) {
+    var a = (e.target && e.target.closest) ? e.target.closest('a[href]') : null;
+    if (!a) { return; }
+    var leaves = a.protocol === 'mailto:' || a.protocol === 'tel:' ||
+                 (/^https?:$/.test(a.protocol) && a.hostname !== window.location.hostname);
+    if (!leaves) { return; }
+
+    var name = 'Outbound: other';
+    if (a.protocol === 'mailto:') {
+      name = 'Email: direct enquiry';
+    } else if (a.protocol === 'tel:') {
+      name = 'Phone';
+    } else {
+      for (var i = 0; i < OUTBOUND.length; i++) {
+        if (OUTBOUND[i][0].test(a.hostname)) { name = OUTBOUND[i][1]; break; }
+      }
+    }
+    window.va('event', {
+      name: name,
+      data: {
+        from: window.location.pathname,
+        label: (a.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 60)
+      }
+    });
+  }, true);
+
 })();

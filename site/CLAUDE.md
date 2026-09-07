@@ -22,7 +22,7 @@ sitemap.xml                two URLs
 assets/css/fonts.css       @font-face declarations (self-hosted)
 assets/css/site.css        the entire stylesheet - both pages share it
 assets/js/site.js          FAQ accordion, events switcher, process hover, scroll reveal,
-                           chart draw-in, Devcon countdown
+                           chart draw-in, Devcon countdown, outbound click events
 assets/fonts/*.woff2       Newsreader · Source Serif 4 · Archivo · Playfair Display
 assets/img/*.webp          all imagery
 assets/img/logo-mark-light.webp    logo, strapline masked off - cover and EI header
@@ -184,6 +184,15 @@ search and replace across `index.html`, `event-intelligence.html` and `sitemap.x
   They are not stray markup.
 - **The FAQ and the events switcher fail open**: with JS off, a `<noscript>` block reveals all
   answers. Keep that block if you touch the head.
+- **Analytics is Vercel Web Analytics**, enabled 7 September 2026. The script is served from
+  `/_vercel/insights/script.js`, which is FIRST PARTY on this domain, so it adds no third party
+  and rule 4 still holds. No cookies, so no consent banner is needed.
+- **Outbound clicks are the conversions.** Nothing converts on this site: every real action
+  leaves it for Typeform, the calendar, Telegram or email, so pageviews alone measure nothing.
+  Section 7 of `site.js` fires a named event for each. It matches on `a.hostname`, never on the
+  full URL: a bare `/x\.com/` would also match `mailbox.com`. Patterns are anchored with
+  `(^|\.)host$` so only the host or a subdomain counts. Internal and in-page links fire nothing,
+  deliberately, so the monthly event budget is not spent on navigation.
 
 ## Known open items
 
