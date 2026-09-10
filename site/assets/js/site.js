@@ -147,7 +147,8 @@
     [/(^|\.)luma\.com$/i,             'Link: Luma'],
     [/(^|\.)linkedin\.com$/i,         'Link: LinkedIn'],
     [/(^|\.)x\.com$/i,                'Link: X'],
-    [/(^|\.)lemurlabs\.net$/i,        'Link: Lemur Labs']
+    [/(^|\.)lemurlabs\.net$/i,        'Link: Lemur Labs'],
+    [/(^|\.)docs\.google\.com$/i,      'Link: Side events calendar']
   ];
 
   document.addEventListener('click', function (e) {

@@ -157,8 +157,9 @@ search and replace across `index.html`, `event-intelligence.html` and `sitemap.x
 
 ## Things that are easy to get wrong
 
-- **`#upcoming-events`** on the Event Intelligence page is targeted by four links in the home-page
-  footer. Don't rename that id.
+- **`#upcoming-events`** on the Event Intelligence page is targeted by three links in the
+  home-page footer. Don't rename that id. It was four until 10 September 2026, when Side Events
+  Calendar was repointed at the owner's Google Sheet.
 - **The Event Intelligence page has no cover and no footer** - a slim `.bar` header only. That is
   deliberate; the page is meant to be short.
 - **The report email capture is commented out**, not deleted. It sits in `index.html` under a
