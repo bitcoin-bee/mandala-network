@@ -142,7 +142,7 @@
      of it, counts. */
   var OUTBOUND = [
     [/(^|\.)typeform\.com$/i,        'Lead: Typeform'],
-    [/(^|\.)calendar\.app\.google$/i, 'Lead: Book a call'],
+    [/(^|\.)calendly\.com$/i,        'Lead: Book a call'],
     [/(^|\.)t\.me$/i,                 'Lead: Telegram'],
     [/(^|\.)luma\.com$/i,             'Link: Luma'],
     [/(^|\.)linkedin\.com$/i,         'Link: LinkedIn'],
