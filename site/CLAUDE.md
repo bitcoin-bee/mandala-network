@@ -213,8 +213,10 @@ search and replace across `index.html`, `event-intelligence.html` and `sitemap.x
 - ~~`from relationships to real outcomes` appeared twice at the bottom of the home page.~~
   RESOLVED 4 September 2026: the Let's talk block now uses the strapline-free mark, so the line
   survives only in the footer base bar.
-- Article card 3 in the Community Magazine section carries a different X post URL but the same
-  headline as card 1. One headline is wrong - the owner needs to supply the correct one.
+- ~~Article card 3 carried the same headline as another card.~~ RESOLVED 28 September 2026:
+  the Jaipur/palace-door card (X post ...2057) is 'Why you should go to DevCon Mumbai: India
+  Digital Assets Chapter'; the IIT Bombay card (X post ...2087) keeps the 'developer talent'
+  headline. Two new LinkedIn cards were also added at the top of the list the same day.
 - The cover photo original is 653px wide, which is soft on large screens. A higher-resolution
   original would improve it.
 - The word "evential" was corrected to "experience" on the Event Intelligence page; the owner
