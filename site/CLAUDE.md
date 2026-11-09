@@ -170,8 +170,14 @@ search and replace across `index.html`, `event-intelligence.html` and `sitemap.x
 - **The Event Intelligence nav uses absolute anchors** (`/#about`, `/#capabilities`,
   `/#case-studies`). The leading `/` is what makes cross-page navigation work. Don't strip it.
 - **Both pages share `site.css` and `site.js`.** A change to either affects both. Check both.
-- **Section order** is Cover, Clients, Thesis, Capabilities, Case study, Events, Report, FAQ,
-  Contact. This order was set by the owner after trying it both ways. Do not reorder.
+- **Section order** is Cover, Clients, Thesis, Capabilities, Case study, Report, FAQ, Events,
+  Contact. The owner moved Events down to just above Contact on 9 November 2026 ('push it to the
+  bottom'). Do not reorder without being asked.
+- **The Event Intelligence upcoming-events switcher defaults to EthCC** (the third item, panel 3)
+  as of 9 November 2026, since Devcon Mumbai has passed. The `data-on` attribute sits on the
+  EthCC button, panel and background image, and the counter starts at '3 / 3'. site.js writes the
+  plain id to #ueCount (no leading zero); the numbered markers across the site read '1. 2. 3.',
+  not '01 02 03'.
 - **The Let's talk block opens with the logo, not a heading.** `h2.contact__mark` wraps the
   logo; the footer carries "Mandala Network" as small Archivo caps instead. That swap was
   deliberate. On 4 September 2026 the owner asked for it smaller and cleaner, so it moved from

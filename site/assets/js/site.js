@@ -69,7 +69,7 @@
         ueBgs.forEach(function (img) {
           img.toggleAttribute('data-on', img.getAttribute('data-ue-bg') === id);
         });
-        if (ueCount) { ueCount.textContent = '0' + id; }
+        if (ueCount) { ueCount.textContent = id; }
       });
     });
   }
