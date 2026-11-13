@@ -420,7 +420,7 @@ button{font:inherit;color:inherit}
   animation:filmStrip 105s linear infinite}
 .roll span[aria-hidden]{color:var(--gold)}
 @keyframes filmStrip{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.mag-grid{display:grid;grid-template-columns:minmax(0,0.68fr) minmax(0,1.15fr);gap:4rem;align-items:start}
+.mag-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:4.5rem;align-items:start}
 .mag-col{display:flex;flex-direction:column;gap:2rem}
 .mag-cover{width:100%;aspect-ratio:1414/2000;overflow:hidden;border:1px solid rgba(245,239,226,0.16);position:relative;transition:transform 0.45s ease}
 .mag-cover:hover{transform:translateY(-3px)}

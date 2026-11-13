@@ -170,9 +170,11 @@ search and replace across `index.html`, `event-intelligence.html` and `sitemap.x
 - **The Event Intelligence nav uses absolute anchors** (`/#about`, `/#capabilities`,
   `/#case-studies`). The leading `/` is what makes cross-page navigation work. Don't strip it.
 - **Both pages share `site.css` and `site.js`.** A change to either affects both. Check both.
-- **Section order** is Cover, Clients, Thesis, Capabilities, Case study, Report, FAQ, Events,
-  Contact. The owner moved Events down to just above Contact on 9 November 2026 ('push it to the
-  bottom'). Do not reorder without being asked.
+- **Section order** is Cover, Clients, Thesis, Capabilities, Case study, Report, FAQ, Contact.
+  The owner moved Events down on 9 November 2026 and then removed the 'meet us next at' Events
+  section from the landing page entirely the same day (Devcon Mumbai had passed). Its `.events`
+  CSS and the countdown code in site.js are now unused but harmless. Do not reorder without being
+  asked.
 - **The Event Intelligence upcoming-events switcher defaults to EthCC** (the third item, panel 3)
   as of 9 November 2026, since Devcon Mumbai has passed. The `data-on` attribute sits on the
   EthCC button, panel and background image, and the counter starts at '3 / 3'. site.js writes the
